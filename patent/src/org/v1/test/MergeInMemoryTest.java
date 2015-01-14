@@ -11,7 +11,7 @@ import org.v1.utils.MergeInMemory;
 
 public class MergeInMemoryTest {
 	
-	private static final String OUTPUT_FILE = "";
+	private static final String OUTPUT_FILE = "D:\\develop\\data\\test";
 	
 	public static void main(String[] args) throws Exception {
 		LineIterator iterator = IOUtils.lineIterator(new FileInputStream(OUTPUT_FILE), "UTF8");
@@ -22,8 +22,11 @@ public class MergeInMemoryTest {
 		throws IOException, InterruptedException {
 		List<String> list = new ArrayList<String>();
 		while (values.hasNext())
-			list.add(values.next());
-		MergeInMemory.mergeInMemory(list);
+			list.add(values.next());		
+		
+		List<String> results = MergeInMemory.mergeInMemory(list);
+		for (String str : results)
+			System.out.println(str);
 	}
 	
 	static class Text {

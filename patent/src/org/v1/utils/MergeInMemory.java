@@ -10,16 +10,14 @@ import java.util.Map;
 class TreeRecord{
 	private String key;
 	private String value;
-	
-	private String nextKey;
-	private String nextValue;
+	private int index; // the nextKey is from 0 to index in this.key.
 	
 	private static final String separator = "##";
 	
 	public TreeRecord(String key, String value) {
 		this.key = key;
 		this.value = value;
-		setNextKeyAndNextValue();
+		setIndex();
 	}
 	
 	public String getKey() {
@@ -49,21 +47,30 @@ class TreeRecord{
 	}
 	
 	public String getNextKey(){
+		String nextKey = null;
+		if (index == -1) // 对于第一个字段组的情况
+			nextKey = "(" + key + ")" + value;
+		else 
+			nextKey = key.substring(0, index);
+		
 		return nextKey;
 	}
 	
 	public String getNextValue(){
+		String nextValue = null;
+		if (index == -1)  // 对于第一个字段组的情况
+			nextValue = null;
+		else 		
+			nextValue = "(" + key.substring(index + separator.length()) + ")" + value; 
+		
 		return nextValue;
 	}
 	
-	private void setNextKeyAndNextValue(){
-		if (!key.contains(separator)) { // 对于第一个字段组的情况
-			nextKey = "(" + key + ")" + value;
-			nextValue = null;
-		}
-		int lastindex = key.lastIndexOf(separator);
-		nextKey = key.substring(0, lastindex);
-		nextValue = "(" + key.substring(lastindex + separator.length()) + ")"; 
+	private void setIndex(){
+		if (!key.contains(separator)) // 对于第一个字段组的情况
+			index = -1;
+		else
+			index = key.lastIndexOf(separator);
 	}
 }
 
@@ -79,6 +86,9 @@ public class MergeInMemory {
 		while (!isFinish)
 			merge();
 		
+		//merge();
+		//showRecords();
+		
 		return list;
 	}
 	
@@ -92,11 +102,13 @@ public class MergeInMemory {
 		for (TreeRecord originTreeRecord : records)	{
 			String newKey = originTreeRecord.getNextKey();	
 			String newValue = originTreeRecord.getNextValue();
+			
 			if(map.containsKey(newKey)){
 				String setValue = map.get(newKey);
-				setValue = newValue + setValue;
-			} else 
-				map.put(newKey, newValue);
+				newValue = newValue + setValue;				
+			} 
+			
+			map.put(newKey, newValue);
 		}
 		
 		records.clear();
@@ -123,7 +135,15 @@ public class MergeInMemory {
 	}
 	
 	private static void initRecords(List<String> values){
+		records = new ArrayList<TreeRecord>();
 		for (String str : values)
 			records.add(TreeRecord.fromString(str));		
+	}
+	
+	public static void showRecords(){
+		for (TreeRecord record : records){
+			System.out.println(record.getKey() + " === " + record.getValue());
+			System.out.println(record.getNextKey() + " --- " + record.getNextValue());
+		}		
 	}
 }
