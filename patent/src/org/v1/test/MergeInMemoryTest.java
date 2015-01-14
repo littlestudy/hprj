@@ -11,7 +11,7 @@ import org.v1.utils.MergeInMemory;
 
 public class MergeInMemoryTest {
 	
-	private static final String OUTPUT_FILE = "D:\\develop\\data\\test";
+	private static final String OUTPUT_FILE = "/home/htmp/output/testcsvGroup/part-m-00000";
 	
 	public static void main(String[] args) throws Exception {
 		LineIterator iterator = IOUtils.lineIterator(new FileInputStream(OUTPUT_FILE), "UTF8");

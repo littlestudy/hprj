@@ -43,6 +43,9 @@ class TreeRecord{
 	
 	public static TreeRecord fromString(String str){
 		int index = str.indexOf("[");
+		if (index == -1)
+			return new TreeRecord(str, "");
+		
 		return new TreeRecord(str.substring(0, index), str.substring(index));
 	}
 	

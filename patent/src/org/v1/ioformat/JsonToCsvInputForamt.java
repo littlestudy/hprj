@@ -46,7 +46,7 @@ public class JsonToCsvInputForamt extends FileInputFormat<LongWritable, Text> {
 		public boolean nextKeyValue() throws IOException, InterruptedException {
 			while (reader.nextKeyValue()) {
 				String value = jsonToCsv.jsonStringToCsv(reader.getCurrentValue().toString(), groups);
-				System.out.println("value: " + value);
+				//System.out.println("value: " + value);
 				if (value != null) {
 					value_.set(value);
 					return true;

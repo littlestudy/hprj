@@ -20,8 +20,9 @@ import org.v1.utils.Constant;
 public class JsonToCsvMapReduce extends Configured implements Tool{
 	public static void main(String[] args) throws Exception {	
 		args = new String[] {
-				"hdfs://master:9000/user/hadoop/data/o100R",
-				"/home/htmp/output/testcsv"
+				//"hdfs://master:9000/user/hadoop/data/o100R",
+				"/home/htmp/data/o100R",
+				"/home/htmp/output/testcsvGroup"
 		};
 		int res = ToolRunner.run(new Configuration(),  new JsonToCsvMapReduce(), args);
 		System.exit(res);
@@ -41,7 +42,7 @@ public class JsonToCsvMapReduce extends Configured implements Tool{
 		job.setNumReduceTasks(0);
 
 		JsonToCsvInputForamt.setGroups(Constant.getTargetFileds());
-		JsonToCsvInputForamt.setGroupSeparator(",");
+		JsonToCsvInputForamt.setGroupSeparator("##");
 		job.setInputFormatClass(JsonToCsvInputForamt.class);
 
 		job.setMapOutputKeyClass(NullWritable.class);

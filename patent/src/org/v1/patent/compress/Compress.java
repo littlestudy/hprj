@@ -25,7 +25,8 @@ public class Compress extends Configured implements Tool{
 	
 	public static void main(String[] args) throws Exception {		
 		args = new String[] {
-				"hdfs://master:9000/user/hadoop/data/o100R",
+				//"hdfs://master:9000/user/hadoop/data/o100R",
+				"/home/htmp/data/o100R",
 				"/home/htmp/output/test-compress/compress"
 		};
 		int res = ToolRunner.run(new Configuration(),  new Compress(), args);
@@ -44,7 +45,6 @@ public class Compress extends Configured implements Tool{
 		Job job = null;		
 		String output = outputbase;
 		for (int i = 0; i < Constant.getTargetFileds().size() - 1; i++) {
-
 			job = Job.getInstance(conf);
 			initJob2(job);
 			output = outputbase + i;

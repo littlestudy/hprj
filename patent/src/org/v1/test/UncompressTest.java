@@ -11,9 +11,9 @@ import org.v1.patent.uncompress.UnCompress;
 public class UncompressTest {
 
 	public static void main(String[] args) throws Exception {
-		BufferedReader reader = new BufferedReader(new FileReader("/home/htmp/output/test-compress/compress5/part-r-00000"));
+		BufferedReader reader = new BufferedReader(new FileReader("/home/htmp/tmp/aaa"));
 		String line = null;
-		PrintStream ps = new PrintStream("/home/htmp/output/uncompressResult");
+		PrintStream ps = new PrintStream("/home/htmp/output/uncompressResult2");
 		while ((line = reader.readLine()) != null){
 			List<String> list = UnCompress.UncompressUtil(line);
 			printStrings(list, ps);
