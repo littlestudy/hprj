@@ -7,14 +7,14 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-class TreeRecord{
+class TreeRecord2{
 	private String key;
 	private String value;
 	private int index; // the nextKey is from 0 to index in this.key.
 	
 	private static final String separator = "##";
 	
-	public TreeRecord(String key, String value) {
+	public TreeRecord2(String key, String value) {
 		this.key = key;
 		this.value = value;
 		setIndex();
@@ -77,12 +77,14 @@ class TreeRecord{
 	}
 }
 
-public class MergeInMemory {
+public class MergeInMemoryWithDict {
 	
 	private static List<TreeRecord> records;
 	private static boolean isFinish = false;
 	private static List<String> list = null;
 		
+	private static List<Map<String, Integer>> dictionary = new ArrayList<Map<String,Integer>>();
+	
 	public static List<String> mergeInMemory(List<String> values){
 		initRecords(values);		
 		
