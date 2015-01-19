@@ -1,97 +1,108 @@
 package org.v1.utils.mergeinmemory;
 
+import java.util.List;
+
 public class TreeRecord {
 	
 	private String mKey;
-	private String mTree;
-		
-	private static String SEPARATOR = "##";	
+	private String mRoot;		// mRoot: (...)
+	private String mSubTrees;	// mSubTrees: [(.)[..](.)[..] ... ... (.)[..]]
+								// Tree: mRoot + mSubTrees
 	
-	private TreeRecord(String key, String tree){
+	public TreeRecord(String key, String root, String subTrees) {
+		super();
 		this.mKey = key;
-		this.mTree = tree;		
+		this.mRoot = root;
+		this.mSubTrees = subTrees;
 	}
-	
+
 	public String getKey() {
 		return mKey;
 	}
 	
 	public void setKey(String key) {
 		this.mKey = key;
-	}
-	
-	public String getTree() {
-		return mTree;
-	}
-	
-	public void setTree(String tree) {
-		this.mTree = tree;
-	}
-	
+	}	
+
 	public String getRoot() {
-		return mTree.substring(1, mTree.indexOf(""));
+		return mRoot.substring(1, mRoot.lastIndexOf(")"));
+	}
+
+	public void setRoot(String root) {
+		this.mRoot = "(" + root + ")";
+	}
+
+	public String getSubTrees() {
+		return mSubTrees.substring(1, mSubTrees.lastIndexOf("]"));
+	}
+
+	public void setSubTrees(String subTrees) {
+		this.mSubTrees = "[" + subTrees + "]";
 	}
 	
-	public String append(String trees){
-		return trees + mTree;
+	public String getTree(){
+		return mRoot + mSubTrees;
 	}
 
 	@Override
 	public String toString() {
-		return mKey + "[" + mTree + "]";
+		return mKey + mRoot + mSubTrees;
 	}	
 	
-	public static void setSeparator(String seperator){
-		SEPARATOR = seperator;
+	public static TreeRecord fromOriginalString(String str){
+		return fromOriginalString(str, "##");
 	}
-	
 	/*
 	 * str: ..##..## ... ... ##..##AA
 	 * 
 	 * result
-	 * keyStr: ..##..## ... ... ##..
-	 * treeStr: (AA)
+	 * mKey: 		..##..## ... ... ##..
+	 * mRoot: 		(AA)
+	 * mSubTrees: 	""
 	 */
-	public static TreeRecord fromString(String str){		
-		int treeNodeIndex = str.lastIndexOf(SEPARATOR);
-		String rootStr = str.substring(treeNodeIndex + SEPARATOR.length());
-		String keyStr = str.substring(treeNodeIndex);
-		String treeStr = "(" + rootStr + ")";		
-			
-		return new TreeRecord(keyStr, treeStr);
+	public static TreeRecord fromOriginalString(String str, String separator){
+		int lastIndex = str.lastIndexOf(separator);
+		String key = str.substring(0, lastIndex);
+		String root = str.substring(lastIndex + separator.length());
+		return new TreeRecord(key, root, "");
 	}	
 	
-	/*
-	 * trees: (..)[...](..)[...] ... ... (..)[...]
-	 */
-	public static String generateSubTree(String trees){ 
-		return "[" + trees + "]";
+	public static TreeRecord generateTreeRecodeFromTreeList(
+		String keyStr, List<TreeRecord> treeList){
+		
+		return generateTreeRecodeFromTreeList(keyStr, treeList, "##");
 	}
 	
 	/*
-	 * keyStr: ..##..##AA
-	 * treeStr: (..)[...](..)[...] ... ... (..)[...]
+	 * keyStr: 			..##..##AA
+	 * treeStr: 		(..)[...](..)[...] ... ... (..)[...]
 	 *
 	 * result
-	 * newKey: ..##..
-	 * newTree: (AA)[(..)[...](..)[...] ... ... (..)[...]]
+	 * newKey: 			..##..
+	 * newRootStr: 		AA
+	 * newSubTreesStr: 	(..)[...](..)[...] ... ... (..)[...]
 	 * 
 	 */
-	public static TreeRecord generateTreeRecode(String keyStr, String treesStr){
-		String subTreesStr = "[" + treesStr + "]";
+	public static TreeRecord generateTreeRecodeFromTreeList(
+			String keyStr, List<TreeRecord> treeList, String separator){
 		
-		int newTreeNodeIndex = keyStr.lastIndexOf(SEPARATOR);
+		StringBuilder sb = new StringBuilder();
+		for (TreeRecord treeRecord : treeList){
+			sb.append(treeRecord.getTree());
+		}
+		String newSubTreesStr = sb.toString();
+		sb = null;
+		
+		int newTreeNodeIndex = keyStr.lastIndexOf(separator); 
 		String newKeyStr = null;
-		String newTreeStr = null;
-		if (newTreeNodeIndex == -1){  // 第一个子段组
-			String newRootStr = keyStr;	
-			newTreeStr = "(" + newRootStr + ")" + subTreesStr;
+		String newRootStr = null;		
+		if (newTreeNodeIndex == -1){  // 第一个字段组
+			newRootStr = keyStr;	
 		} else {			
-			String newRootStr = keyStr.substring(newTreeNodeIndex + SEPARATOR.length());
-			keyStr = keyStr.substring(newTreeNodeIndex);
-			newTreeStr = "(" + newRootStr + ")" + subTreesStr;
+			newRootStr = keyStr.substring(newTreeNodeIndex + separator.length());
+			keyStr = keyStr.substring(newTreeNodeIndex);			
 		}		
 		
-		return new TreeRecord(newKeyStr, newTreeStr);
+		return new TreeRecord(newKeyStr, newRootStr, newSubTreesStr);
 	}
 }
