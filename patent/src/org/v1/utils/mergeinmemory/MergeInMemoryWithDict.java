@@ -7,22 +7,27 @@ import java.util.Map;
 
 public class MergeInMemoryWithDict {
 	
-	private List<TreeRecord> records;
-	private boolean isFinish = false;			
-	private List<Map<String, Integer>> dictionary;
-	private int code;
+	private List<TreeRecord> records;		
 	private List<Integer> mGroup;
+	private List<Map<String, Integer>> dictionary;	
+	private List<Integer> dictionaryCodeTop;
 	
 	public MergeInMemoryWithDict(List<String[]> group){
 		mGroup = new ArrayList<Integer>(group.size());
-		int fieldNumberBase = 0;
 		
-		for (String[] strings : group){		
+		int fieldNumberBase = 0;
+		for (int i = 0; i < group.size(); i++)	{
 			mGroup.add(fieldNumberBase);	
+			String [] strings = group.get(i);			
 			fieldNumberBase += strings.length;			
 		}
 		
-		dictionary = new ArrayList<Map<String,Integer>>(mGroup.size());
+		dictionary = new ArrayList<Map<String,Integer>>(fieldNumberBase);
+		dictionaryCodeTop = new ArrayList<Integer>(fieldNumberBase);
+		for (int i = 0; i < fieldNumberBase; i++){
+			dictionary.add(new HashMap<String, Integer>());
+			dictionaryCodeTop.add(0);
+		}		
 	}
 	
 	public DataBlock mergeInMemory(List<String> values){
@@ -33,18 +38,16 @@ public class MergeInMemoryWithDict {
 			merge(fieldNumberBase);
 		}
 		
-		return null;
+		return new DataBlock(dictionary, records);
 	}
 	
 	private void merge(int fieldNumberBase){	
 		Map<String, List<TreeRecord>> map = new HashMap<String, List<TreeRecord>>();
 		
-		code = 0;
 		for (TreeRecord treeRecord : records)	{
 			String key = treeRecord.getKey();	
-			String root = treeRecord.getRoot();
 			
-			generateDictItems(root, fieldNumberBase);
+			generateDictItems(treeRecord, fieldNumberBase); // 对当前的treeRecord的root进行编码
 			
 			if(!map.containsKey(key)){
 				List<TreeRecord> treeList = new ArrayList<TreeRecord>();
@@ -64,14 +67,24 @@ public class MergeInMemoryWithDict {
 		map = null;
 	}
 	
-	private void generateDictItems(String root, int fieldNumberBase) {
-		String parts[] = root.split(",", -1);
+	private void generateDictItems(final TreeRecord treeRecord, int fieldNumberBase) {
+		String parts[] = treeRecord.getRoot().split(",", -1);
 		int groupItemLen = parts.length;
-		for (int i = 0; i < groupItemLen; i++){
-			Map<String,Integer> map = dictionary.get(i + fieldNumberBase);
-			map = new HashMap<String, Integer>();
-		}
+		StringBuilder sb = new StringBuilder();
 		
+		for (int i = 0; i < groupItemLen; i++){
+			Map<String,Integer> map = dictionary.get(i + fieldNumberBase);	
+			int code = 0;
+			if (!map.containsKey(parts[i])){
+				code = dictionaryCodeTop.get(i + fieldNumberBase);
+				map.put(parts[i], code);
+				dictionaryCodeTop.set(i + fieldNumberBase, code + 1);
+			} else {
+				code = map.get(parts[i]);
+			}
+			sb.append(",").append(String.valueOf(code));
+		}
+		treeRecord.setRoot(sb.substring(1));
 	}
 
 	private void initRecords(List<String> values){
