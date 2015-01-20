@@ -77,7 +77,7 @@ public class JsonToCsvInputForamt extends FileInputFormat<LongWritable, Text> {
 		}
 	}
 	
-	public static void setGroups(List<String[]> groups) {		
+	public static void setGroups(List<String[]> groups) {		// the order needs to be changed.
 		LOG.info("set group for JsonToCsvInputForamt.JsonToCsvRecordReader");
 		JsonToCsvInputForamt.JsonToCsvRecordReader.groups = groups;
 	}

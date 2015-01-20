@@ -5,8 +5,7 @@ import java.util.List;
 
 import org.v1.utils.mergeinmemory_v2.GroupBundle;
 
-public class GroupBundleTest {
-	
+public class GroupBundleTest {	
 	
 	public static void main(String[] args) {
 		

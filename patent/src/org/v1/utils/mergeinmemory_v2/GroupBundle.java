@@ -27,14 +27,17 @@ public class GroupBundle {
 	private List<Group> bundle;
 	
 	public GroupBundle(List<String []> list){
+		List<Group> tmpBundle = new ArrayList<Group>();
 		bundle = new ArrayList<Group>();
 		int amount = 0;		
 		for (int i = list.size(); i > 0 ; i--){			
-			bundle.add(new Group(list.get(i - 1), amount));
+			tmpBundle.add(new Group(list.get(i - 1), amount));
 			amount += list.get(i - 1).length;
 		}
 		
 		fieldAmount = amount;
+		for (int i = tmpBundle.size(); i > 0; i--)
+			bundle.add(tmpBundle.get(i - 1));
 	}
 
 	public int getFieldAmount() {
