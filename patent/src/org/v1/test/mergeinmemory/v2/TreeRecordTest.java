@@ -36,7 +36,7 @@ public class TreeRecordTest {
 		showRecords();
 		
 		System.out.println("--- DictionaryBundle --------------------------------------");
-		//dictionaryBundle.showDictionaries();
+		dictionaryBundle.showDictionaries();
 	}
 	
 	private static void initRecords(List<String> values){
