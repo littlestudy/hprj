@@ -14,7 +14,7 @@ public class MergeInMemoryWithDict {
 	private static boolean isFinish = false;
 	private static List<String> list = null;
 		
-	private static List<Map<String, Integer>> dictionary = new ArrayList<Map<String,Integer>>();
+	//private static List<Map<String, Integer>> dictionary = new ArrayList<Map<String,Integer>>();
 	
 	public static List<String> mergeInMemory(List<String> values){
 		initRecords(values);		
