@@ -77,7 +77,7 @@ public class TreeRecordTest {
 		for (int i = 0; i < groupItemLen; i++){
 			int fieldNumber = i + fieldNumberBase;			
 			int code = dictionaryBundle.find(fieldNumber, parts[i]);			
-			sb.append(",").append(String.valueOf(code));
+			sb.append(",").append(String.valueOf(code)); 
 			//System.out.println("fieldNumber: " + fieldNumber + " field: " + parts[i] + " code: " + code);
 		}
 		treeRecord.setRoot(sb.substring(1));
