@@ -55,4 +55,8 @@ public class GroupBundle {
 	public int getGroupAmount(){
 		return bundle.size();
 	}
+	
+	public int findField(String field){
+		return 0; ///////////////////////////
+	}
 }
