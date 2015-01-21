@@ -1,0 +1,113 @@
+<project name="Hiped2" basedir="." default="jar">
+
+	<!--<property name="job-class" value="org.hiped2.ch3.csv.CSVMapReduce"/>-->
+	
+	<property name="job-class" value=" org.hip.ch6.sort.total.TotalSortMapReduce"/>
+									 
+	<property name="hadoop-home" value="D:\develop\hadoop-2.6.0"/>
+	
+	<property name="hadoop-host" value="hadoop@master"/>
+	
+	<property name="hadoop-appdir" value="/home/hadoop/appdir"/>
+	
+	<property name="logReader-class" value="org.hip.base.LogReader"/>
+	
+	<!-- 指定jar包的名字 -->
+	<property name="job-jar" value="job.jar"/>
+	
+	<path id="project.classpath">
+		<fileset dir="lib">
+			<include name="*.jar" />
+		</fileset>
+		<fileset dir="${hadoop-home}">
+			<include name="**/*.jar" />
+		</fileset>		
+		 <fileset dir="${basedir}/">
+ 	            <include name="${job-jar}"/>
+ 	     </fileset>
+	</path>
+	
+	<target name="clean" >
+	 	<delete dir="bin" failonerror="false" />
+		<mkdir dir="bin"/>
+ 	</target>	
+	
+	<target name="build" depends="clean">
+ 		
+ 		<javac destdir="bin" encoding="utf-8" debug="true" includeantruntime="false" debuglevel="lines,vars,source">
+            <src path="src"/>
+ 			<exclude name="**/.svn" />
+            <classpath refid="project.classpath"/>
+        </javac>
+		<copy todir="bin">
+			<fileset dir="src">
+				<include name="*config*"/>
+			</fileset>
+		</copy>
+ 	</target>
+	
+ 	<target name="jar" depends="build">
+ 		<copy todir="bin/lib">
+ 			<fileset dir="lib">
+ 				<include name="**/*.*"/>
+	 		</fileset>
+ 		</copy>
+ 		
+ 		<path id="lib-classpath">
+ 			<fileset dir="lib" includes="**/*.jar" />
+ 		</path>
+ 		
+ 		<pathconvert property="my.classpath" pathsep=" " >
+ 			<mapper>
+ 		    	<chainedmapper>
+ 		        	<!-- 移除绝对路径 -->
+ 		        	<flattenmapper />
+ 		        	<!-- 加上lib前缀 -->
+ 		        	<globmapper from="*" to="lib/*" />
+ 		       </chainedmapper>
+ 		     </mapper>
+ 		     <path refid="lib-classpath" />
+ 		</pathconvert>
+ 		
+ 		<jar basedir="bin" jarfile="${job-jar}" >
+ 			<include name="**/*"/>
+ 			<!-- define MANIFEST.MF -->
+ 			<manifest>
+				<attribute name="Class-Path" value="${my.classpath}" />
+ 			</manifest>
+ 		</jar>
+ 		
+ 		
+ 		<echo message="MSG --> scp ${job-jar} ${hadoop-host}:/${hadoop-appdir}"/>
+		<exec executable="D:\cygwin\bin\scp">
+			<arg value="${job-jar}"/>
+			<arg value="${hadoop-host}:/${hadoop-appdir}"/>
+		</exec>
+ 		
+ 		<echo message="***********************************************************************************************"/>
+ 		<echo message=" "/>
+ 		<echo message="******************************      Start Run Mapreduce Job      ******************************"/>
+ 		<echo message=" "/>
+ 		<echo message="***********************************************************************************************"/>
+
+ 		<exec executable="D:\cygwin\bin\ssh">
+			<arg value="${hadoop-host}"/>
+			<arg value="hadoop jar ${hadoop-appdir}/${job-jar} ${job-class}"/> 			
+		</exec>
+ 		
+ 		<echo message="******************************            Log Info               *****************************"/>
+
+ 		<exec executable="D:\cygwin\bin\ssh">
+			<arg value="${hadoop-host}"/>
+			<arg value="hadoop jar ${hadoop-appdir}/${job-jar} ${logReader-class}"/> 			
+		</exec>
+ 		
+ 	<!-- 
+		<exec executable="hadoop">
+			<arg value="jar"/>
+			<arg value="${job-jar}"/>
+			<arg value="${job-class}"/>
+		</exec>
+	-->
+ 	</target>
+</project>
