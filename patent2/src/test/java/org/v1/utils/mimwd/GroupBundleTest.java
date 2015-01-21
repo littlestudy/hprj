@@ -31,7 +31,7 @@ public class GroupBundleTest {
 		int groupAmount = groupBundle.getGroupAmount();
 		System.out.println("group amount: " + groupAmount);
 		for (int i = 0; i < groupAmount; i++)
-		System.out.println("group: " + "i" 
+		System.out.println("group: " + i 
 							+ " base index: " + groupBundle.getGroupIndexBase(i) 
 							+ " array: " + fromStringArray(groupBundle.getGroup(i))); 
 	}

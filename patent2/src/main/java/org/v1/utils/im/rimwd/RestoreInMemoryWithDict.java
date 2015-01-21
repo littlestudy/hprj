@@ -4,10 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.v1.utils.im.mimwd.DictionaryBundle;
+import org.v1.utils.im.mimwd.GroupBundle;
 
 public class RestoreInMemoryWithDict {
 	
 	private DictionaryBundle dictionaryBundle;
+	private GroupBundle groupBundle;
 	
 	public List<String> UncompressUtil(String records) {
 		List<String> result = new ArrayList<String>();
