@@ -15,13 +15,13 @@ public class RestoreInMemoryWithDict {
 		List<String> result = new ArrayList<String>();
 		
 		int curPos = 0;
-		int baseFieldNumber = 0;
+		int groupNumber = 0;
 		String field = null;		
 		List<String> fileds = new ArrayList<String>();
 		while (curPos < records.length()) {
 			field = getField(records, curPos);
 			curPos += field.length();
-			baseFieldNumber = restoreFields(field.substring(1, field.length() - 1), baseFieldNumber, fileds);
+			//baseFieldNumber = restoreFields(field.substring(1, field.length() - 1), baseFieldNumber, fileds);
 			//fileds.add(rFields);
 			if (records.charAt(curPos) == '[') {
 				curPos++;
