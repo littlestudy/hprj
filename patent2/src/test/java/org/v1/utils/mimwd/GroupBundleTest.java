@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.v1.utils.im.mimwd.GroupBundle;
 
 public class GroupBundleTest {
 

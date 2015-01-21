@@ -8,6 +8,8 @@ import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.LineIterator;
 import org.junit.Before;
 import org.junit.Test;
+import org.v1.utils.im.mimwd.DataBlock;
+import org.v1.utils.im.mimwd.MergeInMemoryWithDict;
 
 public class MergeInMemoryWithDictTest {
 	List<String> values;

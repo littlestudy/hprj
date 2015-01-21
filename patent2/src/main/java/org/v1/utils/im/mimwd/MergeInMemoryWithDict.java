@@ -1,12 +1,11 @@
-package org.v1.utils.mimwd;
+package org.v1.utils.im.mimwd;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.v1.utils.mimwd.DataBlock;
-import org.v1.utils.mimwd.TreeRecord;
+import org.v1.utils.im.mimwd.TreeRecord;
 
 public class MergeInMemoryWithDict {
 	

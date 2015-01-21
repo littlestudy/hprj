@@ -11,6 +11,7 @@ import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.LineIterator;
 import org.junit.Before;
 import org.junit.Test;
+import org.v1.utils.im.mimwd.TreeRecord;
 
 public class TreeRecordTest {
 	List<String> values;

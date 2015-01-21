@@ -2,6 +2,7 @@ package org.v1.utils.mimwd;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.v1.utils.im.mimwd.DictionaryBundle;
 
 public class DictionaryBundleTest {
 
