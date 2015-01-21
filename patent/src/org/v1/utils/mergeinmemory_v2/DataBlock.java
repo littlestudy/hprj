@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DataBlock {
-	private CDictionaryBundle mDictionaryBundle;
+	private DictionaryBundle mDictionaryBundle;
 	private List<String> mRecords;
 	
-	public DataBlock(CDictionaryBundle dictionaryBundle, List<TreeRecord> records) {
+	public DataBlock(DictionaryBundle dictionaryBundle, List<TreeRecord> records) {
 		super();
 		mDictionaryBundle = dictionaryBundle;
 		mRecords = new ArrayList<String>(records.size());
@@ -16,11 +16,11 @@ public class DataBlock {
 		}
 	}
 
-	public CDictionaryBundle getDictionaryBundle() {
+	public DictionaryBundle getDictionaryBundle() {
 		return mDictionaryBundle;
 	}
 
-	public void setDictionaryBundle(CDictionaryBundle dictionaryBundle) {
+	public void setDictionaryBundle(DictionaryBundle dictionaryBundle) {
 		this.mDictionaryBundle = dictionaryBundle;
 	}
 

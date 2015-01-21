@@ -11,7 +11,7 @@ import org.v1.utils.mergeinmemory_v2.TreeRecord;
 public class MergeInMemoryWithDict {
 	
 	private List<TreeRecord> records;	
-	private CDictionaryBundle dictionaryBundle;
+	private DictionaryBundle dictionaryBundle;
 	private GroupBundle groupBundle;
 	
 	/*
@@ -21,7 +21,7 @@ public class MergeInMemoryWithDict {
 	 */
 	public MergeInMemoryWithDict(List<String[]> group){		
 		groupBundle = new GroupBundle(group);		
-		dictionaryBundle = new CDictionaryBundle(groupBundle.getFieldAmount());
+		dictionaryBundle = new DictionaryBundle(groupBundle.getFieldAmount());
 	}
 	
 	public DataBlock mergeInMemory(List<String> values){

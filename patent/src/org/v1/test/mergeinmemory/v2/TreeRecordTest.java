@@ -5,13 +5,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.v1.utils.mergeinmemory_v2.CDictionaryBundle;
+import org.v1.utils.mergeinmemory_v2.DictionaryBundle;
 import org.v1.utils.mergeinmemory_v2.TreeRecord;
 
 public class TreeRecordTest {
 	
 	private static List<TreeRecord> records;
-	private static CDictionaryBundle dictionaryBundle = new CDictionaryBundle(6);
+	private static DictionaryBundle dictionaryBundle = new DictionaryBundle(6);
 	
 	public static void main(String[] args) {
 		String str1 = "0a,1b##2c,3d##4e,5d";		
