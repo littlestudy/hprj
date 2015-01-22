@@ -36,11 +36,7 @@ public class RDictionaryBundle {
 		}
 	}
 	
-	private List<Dictionary> bundle;
-	
-	public RDictionaryBundle(){ ////////////////
-		bundle = new ArrayList<RDictionaryBundle.Dictionary>();
-	}
+	private List<Dictionary> bundle = new ArrayList<RDictionaryBundle.Dictionary>();
 	
 	public RDictionaryBundle(List<String> dictionarys){ // 从字典数据中构造字典
 	}
