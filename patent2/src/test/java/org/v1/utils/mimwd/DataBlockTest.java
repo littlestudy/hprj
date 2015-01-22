@@ -13,6 +13,7 @@ import org.apache.commons.io.LineIterator;
 import org.junit.Before;
 import org.junit.Test;
 import org.v1.utils.im.mimwd.DataBlock;
+import org.v1.utils.im.mimwd.DictionaryBundle;
 import org.v1.utils.im.mimwd.TreeRecord;
 
 public class DataBlockTest {
@@ -63,4 +64,22 @@ public class DataBlockTest {
 			list.add(TreeRecord.generateTreeRecodeFromTreeList(entry.getKey(), entry.getValue()));
 		}
 	}
+	
+		@Test
+	public void testSave() {
+		DictionaryBundle dictionaryBundle = new DictionaryBundle(2);
+		System.out.println(dictionaryBundle.find(0, "aa"));
+		System.out.println(dictionaryBundle.find(0, "bb"));
+		System.out.println(dictionaryBundle.find(0, "cc"));
+		System.out.println(dictionaryBundle.find(1, "dd"));
+		System.out.println(dictionaryBundle.find(1, "ee"));	
+		
+		DataBlock db = new DataBlock(dictionaryBundle, new ArrayList<TreeRecord>());
+		try {
+			db.save("dbtest.txt");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
 }

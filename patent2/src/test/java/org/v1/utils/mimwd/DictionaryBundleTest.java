@@ -29,4 +29,18 @@ public class DictionaryBundleTest {
 		System.out.println(dictionaryBundle.search(1, "cc"));
 	}
 
+	@Test
+	public void testDictionaryToString() {
+		DictionaryBundle dictionaryBundle = new DictionaryBundle(2);
+		System.out.println(dictionaryBundle.find(0, "aa"));
+		System.out.println(dictionaryBundle.find(0, "bb"));
+		System.out.println(dictionaryBundle.find(0, "cc"));
+		System.out.println(dictionaryBundle.find(1, "dd"));
+		System.out.println(dictionaryBundle.find(1, "ee"));
+		
+		//dictionaryBundle.showDictionaries();
+		
+		System.out.println(dictionaryBundle.dictionaryToString(0));
+		System.out.println(dictionaryBundle.dictionaryToString(1));
+	}
 }

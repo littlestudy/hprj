@@ -53,7 +53,7 @@ public class DictionaryBundle {
 			Iterator<Entry<String, Integer>> iter = map.entrySet().iterator();
 			while(iter.hasNext()){
 				Map.Entry<String, Integer> entry = (Map.Entry<String, Integer>) iter.next();
-				sb.append(",").append(entry.getKey()).append(",").append(String.valueOf(entry.getValue()));				
+				sb.append(",").append(entry.getKey()).append(",").append(String.valueOf(entry.getValue()));	
 			}
 			
 			return sb.substring(1);
@@ -85,8 +85,8 @@ public class DictionaryBundle {
 		return bundle.size();
 	}
 	
-	public Dictionary getDictionary(int dicNum){
-		return bundle.get(dicNum);
+	public String dictionaryToString(int dicNum){
+		return bundle.get(dicNum).toString();
 	}
 	
 	public void showDictionaries(){
