@@ -27,7 +27,7 @@ public class RDictionaryBundle {
 			map.put(code, field);
 		}
 		
-		public void showDictionary(){
+		public void showDictionary(){ 
 			Iterator<Entry<Integer, String>> iter = map.entrySet().iterator();
 			while(iter.hasNext()){
 				Map.Entry<Integer, String> entry = (Map.Entry<Integer, String>) iter.next();
