@@ -33,7 +33,7 @@ public class RDictionaryBundle {
 				Map.Entry<Integer, String> entry = (Map.Entry<Integer, String>) iter.next();
 				System.out.println("Code: " + entry.getKey() + ", Field: " + entry.getValue());
 			}
-		}
+		} 
 	}
 	
 	private List<Dictionary> bundle = new ArrayList<RDictionaryBundle.Dictionary>();
