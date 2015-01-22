@@ -34,6 +34,9 @@ public class GroupBundleTest {
 		System.out.println("group: " + i 
 							+ " base index: " + groupBundle.getGroupIndexBase(i) 
 							+ " array: " + fromStringArray(groupBundle.getGroup(i))); 
+		
+		System.out.println("field 'cc' number: " + groupBundle.getFieldNumber("cc"));
+		System.out.println("group 2 indexBase: " + groupBundle.getGroupIndexBase(2));
 	}
 
 	private String fromStringArray(String [] array){

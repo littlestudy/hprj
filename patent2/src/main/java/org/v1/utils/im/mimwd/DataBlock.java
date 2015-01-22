@@ -1,5 +1,6 @@
 package org.v1.utils.im.mimwd;
 
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,5 +40,18 @@ public class DataBlock {
 	public void showRecords(){
 		for (String str : mRecords)
 			System.out.println(str);
+	}
+	
+	public void save(String path) throws Exception{
+		PrintStream ps = new PrintStream(path);
+		
+		
+		for (int i = 0; i < mDictionaryBundle.getDictionaryAmount(); i++){
+			
+			//ps.println(mDictionaryBundle.getDictionary(i).toString());
+		}
+			
+		
+		
 	}
 }

@@ -2,38 +2,42 @@ package org.v1.utils.im.rimwd;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
 
-import org.v1.utils.im.mimwd.DictionaryBundle;
 import org.v1.utils.im.mimwd.GroupBundle;
 
 public class RestoreInMemoryWithDict {
 	
-	private DictionaryBundle dictionaryBundle;
+	private RDictionaryBundle dictionaryBundle;
 	private GroupBundle groupBundle;
 	
-	public List<String> UncompressUtil(String records) {
+	public RestoreInMemoryWithDict(){
+		
+	}
+	
+	public List<String> restoreInMemory(String records) {
 		List<String> result = new ArrayList<String>();
 		
 		int curPos = 0;
-		int groupNumber = 0;
-		String field = null;		
-		List<String> fileds = new ArrayList<String>();
+		
+		int groupNumber = -1;
+		String group = null;				
+		Stack<String> groupStack = new Stack<String>();
 		while (curPos < records.length()) {
-			field = getField(records, curPos);
-			curPos += field.length();
-			//baseFieldNumber = restoreFields(field.substring(1, field.length() - 1), baseFieldNumber, fileds);
-			//fileds.add(rFields);
+			group = getField(records, curPos);
+			groupNumber++;
+			curPos += group.length();
+			groupStack.push(restoreGroup(group, groupNumber));
 			if (records.charAt(curPos) == '[') {
 				curPos++;
 			} else if (records.charAt(curPos) == '(') {
-				result.add(buildObject(fileds));
-				fileds.remove(fileds.size() - 1);
+				result.add(buildObject(groupStack));
+				groupStack.pop();
 			} else if (records.charAt(curPos) == ']'){
-				result.add(buildObject(fileds));
-				fileds.remove(fileds.size() - 1);
-				while (curPos < records.length()
-						&& records.charAt(curPos) == ']') {
-					fileds.remove(fileds.size() - 1);
+				result.add(buildObject(groupStack));
+				groupStack.pop();
+				while (curPos < records.length() && records.charAt(curPos) == ']') {
+					groupStack.pop();
 					curPos++;
 				}
 			} else 
@@ -42,15 +46,18 @@ public class RestoreInMemoryWithDict {
 		return result;
 	}
 
-	private int restoreFields(String subFields, int baseFieldNumber,
-			List<String> fileds) {
-		StringBuilder sb = new StringBuilder();
+	private String restoreGroup(String group, int groupNumber) {		
+		StringBuilder sb = new StringBuilder();		
 		
-		String [] parts = subFields.split(",", -1);		
+		group = group.substring(1, group.length() - 1);
+		int groupIndexBase = groupBundle.getGroupIndexBase(groupNumber);		
+		String [] parts = group.split(",", -1);		
 		for (int i = 0; i < parts.length; i++){
-			
+			int code = Integer.valueOf(parts[i]);
+			String field = dictionaryBundle.search(groupIndexBase + i, code);
+			sb.append(",").append(field);
 		}
-		return baseFieldNumber + parts.length;  //////////
+		return sb.substring(1);
 	}
 
 	private String getField(String records, int startPos) {
@@ -67,11 +74,11 @@ public class RestoreInMemoryWithDict {
 		return records.substring(startPos, searchPos);
 	}
 
-	private String buildObject(List<String> fields) {
+	private String buildObject(Stack<String> groupStack) {
 		StringBuilder sb = new StringBuilder();
-		for (String field : fields) {
+		for (String field : groupStack) {
 			sb.append("," + field);
 		}
-		return sb.toString().substring(1);
+		return sb.substring(1);
 	}
 }

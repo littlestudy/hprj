@@ -14,8 +14,8 @@ public class MergeInMemoryWithDict {
 	private GroupBundle groupBundle;
 	
 	/*
-	 * group中的顺序是字段组归并的顺序
-	 * 如group {array1, array2, array3}，array1先被归并，然后是array2，最后是array3
+	 * group中的顺序是字段组在原来记录中的顺序
+	 * 如group {array1, array2, array3, array4}，array4先被归并，然后是array3，最后是array2，array1不需要归并，只需编码
 	 * 一般重复率高的归并顺序靠后
 	 */
 	public MergeInMemoryWithDict(List<String[]> group){		
@@ -26,19 +26,19 @@ public class MergeInMemoryWithDict {
 	public DataBlock mergeInMemory(List<String> values){
 		initRecords(values);		
 		
-		for (int i = 0; i < groupBundle.getGroupAmount() - 1; i++){
-			int fieldNumberBase = groupBundle.getGroupIndexBase(i);
+		for (int i = groupBundle.getGroupAmount(); i > 1; i--){ // 从后向前归并，最后group中第一个字段组不用归并
+			int fieldNumberBase = groupBundle.getGroupIndexBase(i - 1);
 			merge(fieldNumberBase);
 		}
-		codeLastRoot(0);
+		codeLastRoot(0); //第一个字段组不用归并，只编码
 		return new DataBlock(dictionaryBundle, records);
 	}
 	
-	private void merge(int fieldNumberBase){	
+	private void merge(int fieldNumberBase){		
 		Map<String, List<TreeRecord>> map = new HashMap<String, List<TreeRecord>>();		
 		for (TreeRecord treeRecord : records)	{
 			String key = treeRecord.getKey();	
-			
+		
 			generateDictItems(treeRecord, fieldNumberBase); // 对当前的treeRecord的root进行编码
 			
 			List<TreeRecord> treeList = map.get(key);			

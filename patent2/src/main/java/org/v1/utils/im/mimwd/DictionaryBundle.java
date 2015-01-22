@@ -9,6 +9,9 @@ import java.util.Map.Entry;
 
 public class DictionaryBundle {
 	
+	/*
+	 * key和code是1对1关系
+	 */	
 	private class Dictionary{
 		private int codeTop;
 		private HashMap<String, Integer> map;
@@ -43,6 +46,18 @@ public class DictionaryBundle {
 				System.out.println("Item: " + entry.getKey() + ", Code: " + entry.getValue());
 			}
 		}
+
+		@Override
+		public String toString() {
+			StringBuilder sb = new StringBuilder();
+			Iterator<Entry<String, Integer>> iter = map.entrySet().iterator();
+			while(iter.hasNext()){
+				Map.Entry<String, Integer> entry = (Map.Entry<String, Integer>) iter.next();
+				sb.append(",").append(entry.getKey()).append(",").append(String.valueOf(entry.getValue()));				
+			}
+			
+			return sb.substring(1);
+		}		
 	}
 	
 	private List<Dictionary> bundle;
@@ -64,6 +79,14 @@ public class DictionaryBundle {
 	public Integer search(int dictNum, String key){
 		Dictionary dictionary = bundle.get(dictNum);
 		return dictionary.search(key);
+	}
+	
+	public int getDictionaryAmount(){
+		return bundle.size();
+	}
+	
+	public Dictionary getDictionary(int dicNum){
+		return bundle.get(dicNum);
 	}
 	
 	public void showDictionaries(){
