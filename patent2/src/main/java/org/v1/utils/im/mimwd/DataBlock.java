@@ -15,7 +15,7 @@ public class DataBlock {
 		mDictionaryBundle = dictionaryBundle;
 		mRecords = new ArrayList<String>(records.size());
 		for (TreeRecord treeRecord : records){
-			mRecords.add(treeRecord.getTree());
+			mRecords.add(treeRecord.getTree()); 
 		}
 	}
 
