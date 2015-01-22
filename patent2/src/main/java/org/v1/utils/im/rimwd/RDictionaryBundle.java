@@ -23,6 +23,10 @@ public class RDictionaryBundle {
 			return map.get(code);
 		}
 		
+		public void addItem(int code, String field){
+			map.put(code, field);
+		}
+		
 		public void showDictionary(){
 			Iterator<Entry<Integer, String>> iter = map.entrySet().iterator();
 			while(iter.hasNext()){
@@ -34,10 +38,8 @@ public class RDictionaryBundle {
 	
 	private List<Dictionary> bundle;
 	
-	public RDictionaryBundle(int dictAmount){ ////////////////
-		bundle = new ArrayList<RDictionaryBundle.Dictionary>(dictAmount);
-		for (int i = 0; i < dictAmount; i++)
-			bundle.add(new Dictionary());
+	public RDictionaryBundle(){ ////////////////
+		bundle = new ArrayList<RDictionaryBundle.Dictionary>();
 	}
 	
 	public RDictionaryBundle(List<String> dictionarys){ // 从字典数据中构造字典
@@ -46,6 +48,16 @@ public class RDictionaryBundle {
 	public String search(int dictNum, int code){
 		Dictionary dictionary = bundle.get(dictNum);
 		return dictionary.search(code);
+	}
+	
+	public void addDictionary(String dictString){
+		Dictionary dictionary = new Dictionary();
+		
+		String [] parts = dictString.split(",", -1);
+		for (int i = 0; i < parts.length; i++, i++)
+			dictionary.addItem(Integer.valueOf(parts[i + 1]), parts[i]);
+		
+		bundle.add(dictionary);
 	}
 	
 	public void showDictionaries(){
