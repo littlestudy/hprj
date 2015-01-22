@@ -12,7 +12,7 @@ public class DataBlock {
 	
 	public DataBlock(DictionaryBundle dictionaryBundle, List<TreeRecord> records) {
 		super();
-		mDictionaryBundle = dictionaryBundle;
+		mDictionaryBundle = dictionaryBundle; 
 		mRecords = new ArrayList<String>(records.size());  
 		for (TreeRecord treeRecord : records){
 			mRecords.add(treeRecord.getTree()); 
