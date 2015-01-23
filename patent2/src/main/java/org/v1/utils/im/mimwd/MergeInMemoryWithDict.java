@@ -10,7 +10,7 @@ import org.v1.utils.im.mimwd.TreeRecord;
 public class MergeInMemoryWithDict {
 	
 	private List<TreeRecord> records;	
-	private DictionaryBundle dictionaryBundle;
+	private CDictionaryBundle dictionaryBundle;
 	private GroupBundle groupBundle;
 	
 	/*
@@ -20,7 +20,7 @@ public class MergeInMemoryWithDict {
 	 */
 	public MergeInMemoryWithDict(List<String[]> group){		
 		groupBundle = new GroupBundle(group);		
-		dictionaryBundle = new DictionaryBundle(groupBundle.getFieldAmount());
+		dictionaryBundle = new CDictionaryBundle(groupBundle.getFieldAmount());
 	}
 	
 	public DataBlock mergeInMemory(List<String> values){
@@ -31,7 +31,7 @@ public class MergeInMemoryWithDict {
 			merge(fieldNumberBase);
 		}
 		codeLastRoot(0); //第一个字段组不用归并，只编码
-		return new DataBlock(dictionaryBundle, records);
+		return new DataBlock(groupBundle, dictionaryBundle, records);
 	}
 	
 	private void merge(int fieldNumberBase){		

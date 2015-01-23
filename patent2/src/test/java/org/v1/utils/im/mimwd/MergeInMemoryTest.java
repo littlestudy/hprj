@@ -1,4 +1,4 @@
-package org.v1.utils.mimwd;
+package org.v1.utils.im.mimwd;
 
 import java.io.FileReader;
 import java.util.ArrayList;
@@ -9,9 +9,9 @@ import org.apache.commons.io.LineIterator;
 import org.junit.Before;
 import org.junit.Test;
 import org.v1.utils.im.mimwd.DataBlock;
-import org.v1.utils.im.mimwd.MergeInMemoryWithDict;
+import org.v1.utils.im.mimwd.MergeInMemory;
 
-public class MergeInMemoryWithDictTest {
+public class MergeInMemoryTest {
 	List<String> values;
 	List<String[]> groupList;
 	
@@ -37,10 +37,9 @@ public class MergeInMemoryWithDictTest {
 
 	@Test
 	public void testMergeInMemory() {
-		MergeInMemoryWithDict mimwd = new MergeInMemoryWithDict(groupList);
-		DataBlock dataBlock = mimwd.mergeInMemory(values);
+		MergeInMemory mim = new MergeInMemory(groupList);
+		DataBlock dataBlock = mim.mergeInMemory(values);
 		dataBlock.showRecords();
-		dataBlock.showDictionaryBundle();
 	}
 
 }

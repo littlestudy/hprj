@@ -1,4 +1,4 @@
-package org.v1.utils.mimwd;
+package org.v1.utils.im.mimwd;
 
 
 import java.io.FileReader;
@@ -13,7 +13,8 @@ import org.apache.commons.io.LineIterator;
 import org.junit.Before;
 import org.junit.Test;
 import org.v1.utils.im.mimwd.DataBlock;
-import org.v1.utils.im.mimwd.DictionaryBundle;
+import org.v1.utils.im.mimwd.CDictionaryBundle;
+import org.v1.utils.im.mimwd.GroupBundle;
 import org.v1.utils.im.mimwd.TreeRecord;
 
 public class DataBlockTest {
@@ -39,7 +40,7 @@ public class DataBlockTest {
 		merge(list);				
 		merge(list);
 		
-		DataBlock dataBlock = new DataBlock(null, list);
+		DataBlock dataBlock = new DataBlock(null, null, list);
 		
 		for (String str : dataBlock.getRecords())
 			System.out.println(str);
@@ -67,14 +68,41 @@ public class DataBlockTest {
 	
 		@Test
 	public void testSave() {
-		DictionaryBundle dictionaryBundle = new DictionaryBundle(2);
-		System.out.println(dictionaryBundle.find(0, "aa"));
-		System.out.println(dictionaryBundle.find(0, "bb"));
-		System.out.println(dictionaryBundle.find(0, "cc"));
-		System.out.println(dictionaryBundle.find(1, "dd"));
-		System.out.println(dictionaryBundle.find(1, "ee"));	
+		List<String[]> groups = new ArrayList<String[]>();
+		groups.add(new String[] {"field4", "field5"});
+		groups.add(new String[] {"field1", "field2", "field3"});
+		groups.add(new String[] {"field0"});
+		GroupBundle groupBundle = new GroupBundle(groups);
+			
+		CDictionaryBundle dictionaryBundle = new CDictionaryBundle(6);		
+		dictionaryBundle.find(0, "0p");
+		dictionaryBundle.find(0, "0a");
+		dictionaryBundle.find(1, "1v");
+		dictionaryBundle.find(1, "1b");		
+		dictionaryBundle.find(2, "");
+		dictionaryBundle.find(2, "2c");
+		dictionaryBundle.find(2, "2x");
+		dictionaryBundle.find(3, "3e");
+		dictionaryBundle.find(3, "3d");
+		dictionaryBundle.find(4, "4e");
+		dictionaryBundle.find(4, "4x");
+		dictionaryBundle.find(4, "4t");		
+		dictionaryBundle.find(5, "5d");
+		dictionaryBundle.find(5, "5k");
+				
+		TreeRecord treeRecord1 = new TreeRecord(null, null, null);
+		treeRecord1.setKey(null);
+		treeRecord1.setRoot("0");
+		treeRecord1.setSubTrees("(1,2,1)[(2,0)(0,0)]"); // (0)[(1,2,1)[(2,0)(0,0)]]
+		TreeRecord treeRecord2 = new TreeRecord(null, null, null);
+		treeRecord2.setKey(null);
+		treeRecord2.setRoot("1");
+		treeRecord2.setSubTrees("(0,0,0)[(1,1)](1,1,1)[(0,0)(0,1)]"); // (1)[(0,0,0)[(1,1)](1,1,1)[(0,0)(0,1)]]
+		List<TreeRecord> treeRecords = new ArrayList<TreeRecord>();
+		treeRecords.add(treeRecord1);
+		treeRecords.add(treeRecord2);
+		DataBlock db = new DataBlock(groupBundle, dictionaryBundle, treeRecords);		
 		
-		DataBlock db = new DataBlock(dictionaryBundle, new ArrayList<TreeRecord>());
 		try {
 			db.save("dbtest.txt");
 		} catch (Exception e) {

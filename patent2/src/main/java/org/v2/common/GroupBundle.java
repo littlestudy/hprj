@@ -1,9 +1,10 @@
-package org.v1.utils.im.mimwd;
+package org.v2.common;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
+import org.v2.utils.Constant;
 
 public class GroupBundle {
 	
@@ -34,6 +35,8 @@ public class GroupBundle {
 	
 	private int fieldAmount;
 	private List<Group> bundle;
+	private String separator;
+	
 	
 	/**
 	 * 归并按原记录顺序从后向前进行，如原记录顺数：array1 ## array2 ## array3 ## array4
@@ -43,6 +46,10 @@ public class GroupBundle {
 	 * GroupBundle中的顺序和原记录顺序一样，array1, array2, array3, array4
 	 */
 	public GroupBundle(List<String []> list){
+		this(list, Constant.DEFAULT_SEPARATOR);
+	}
+	
+	public GroupBundle(List<String []> list, String separator){
 		bundle = new ArrayList<Group>();
 		int amount = 0;		
 		for (int i = list.size(); i > 0 ; i--){			
@@ -51,6 +58,7 @@ public class GroupBundle {
 		}
 		
 		fieldAmount = amount;
+		this.separator = separator;
 	}
 
 	public int getFieldAmount() {
@@ -80,6 +88,14 @@ public class GroupBundle {
 		return number;
 	}
 	
+	public String getSeparator() {
+		return separator;
+	}
+
+	public void setSeparator(String separator) {
+		this.separator = separator;
+	}
+
 	public void showGroupBundle(){
 		for (int i = 0; i < bundle.size(); i++)
 			System.out.println(StringUtils.join(bundle.get(i).getGroup(), ","));

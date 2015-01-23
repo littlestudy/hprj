@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-public class DictionaryBundle {
+public class CDictionaryBundle {
 	
 	/*
 	 * key和code是1对1关系
@@ -62,13 +62,13 @@ public class DictionaryBundle {
 	
 	private List<Dictionary> bundle;
 	
-	public DictionaryBundle(int dictAmount){
-		bundle = new ArrayList<DictionaryBundle.Dictionary>(dictAmount);
+	public CDictionaryBundle(int dictAmount){
+		bundle = new ArrayList<CDictionaryBundle.Dictionary>(dictAmount);
 		for (int i = 0; i < dictAmount; i++)
 			bundle.add(new Dictionary());
 	}
 	
-	public DictionaryBundle(List<String> dictionarys){ // 从字典数据中构造字典
+	public CDictionaryBundle(List<String> dictionarys){ // 从字典数据中构造字典
 	}
 	
 	public Integer find(int dictNum, String key){

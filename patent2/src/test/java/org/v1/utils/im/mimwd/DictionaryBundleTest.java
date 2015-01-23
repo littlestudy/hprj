@@ -1,8 +1,8 @@
-package org.v1.utils.mimwd;
+package org.v1.utils.im.mimwd;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.v1.utils.im.mimwd.DictionaryBundle;
+import org.v1.utils.im.mimwd.CDictionaryBundle;
 
 public class DictionaryBundleTest {
 
@@ -12,7 +12,7 @@ public class DictionaryBundleTest {
 
 	@Test
 	public void testFind() {
-		DictionaryBundle dictionaryBundle = new DictionaryBundle(2);
+		CDictionaryBundle dictionaryBundle = new CDictionaryBundle(2);
 		System.out.println(dictionaryBundle.find(0, "aa"));
 		System.out.println(dictionaryBundle.find(0, "bb"));
 		System.out.println(dictionaryBundle.find(0, "aa"));
@@ -21,7 +21,7 @@ public class DictionaryBundleTest {
 
 	@Test
 	public void testSearch() {
-		DictionaryBundle dictionaryBundle = new DictionaryBundle(2);
+		CDictionaryBundle dictionaryBundle = new CDictionaryBundle(2);
 		System.out.println(dictionaryBundle.search(0, "aa"));
 		System.out.println(dictionaryBundle.search(0, "aa"));
 		dictionaryBundle.find(0, "aa");
@@ -31,7 +31,7 @@ public class DictionaryBundleTest {
 
 	@Test
 	public void testDictionaryToString() {
-		DictionaryBundle dictionaryBundle = new DictionaryBundle(2);
+		CDictionaryBundle dictionaryBundle = new CDictionaryBundle(2);
 		System.out.println(dictionaryBundle.find(0, "aa"));
 		System.out.println(dictionaryBundle.find(0, "bb"));
 		System.out.println(dictionaryBundle.find(0, "cc"));

@@ -8,11 +8,13 @@ import org.v1.utils.im.mimwd.GroupBundle;
 
 public class RestoreInMemoryWithDict {
 	
-	private RDictionaryBundle dictionaryBundle;
+	private RDictionaryBundle dictionaryBundle = new RDictionaryBundle();
 	private GroupBundle groupBundle;
 	
-	public RestoreInMemoryWithDict(){
-		
+	public RestoreInMemoryWithDict(List<String> dictStrs, List<String[]> groups){
+		for (int i = 0; i < dictStrs.size(); i++)
+			dictionaryBundle.addDictionary(i, dictStrs.get(i));
+		groupBundle = new GroupBundle(groups);
 	}
 	
 	public List<String> restoreInMemory(String records) {
@@ -31,13 +33,16 @@ public class RestoreInMemoryWithDict {
 			if (records.charAt(curPos) == '[') {
 				curPos++;
 			} else if (records.charAt(curPos) == '(') {
-				result.add(buildObject(groupStack));
+				result.add(buildObject(groupStack));				
 				groupStack.pop();
+				groupNumber--;
 			} else if (records.charAt(curPos) == ']'){
 				result.add(buildObject(groupStack));
 				groupStack.pop();
+				groupNumber--;
 				while (curPos < records.length() && records.charAt(curPos) == ']') {
 					groupStack.pop();
+					groupNumber--;
 					curPos++;
 				}
 			} else 
@@ -81,4 +86,20 @@ public class RestoreInMemoryWithDict {
 		}
 		return sb.substring(1);
 	}
+
+	public RDictionaryBundle getDictionaryBundle() {
+		return dictionaryBundle;
+	}
+
+	public void setDictionaryBundle(RDictionaryBundle dictionaryBundle) {
+		this.dictionaryBundle = dictionaryBundle;
+	}
+
+	public GroupBundle getGroupBundle() {
+		return groupBundle;
+	}
+
+	public void setGroupBundle(GroupBundle groupBundle) {
+		this.groupBundle = groupBundle;
+	}	
 }

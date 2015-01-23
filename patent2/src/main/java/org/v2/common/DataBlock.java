@@ -1,4 +1,4 @@
-package org.v1.utils.im.mimwd;
+package org.v2.common;
 
 import java.io.PrintStream;
 import java.util.ArrayList;
@@ -61,7 +61,7 @@ public class DataBlock {
 	public void save(String path) throws Exception{
 		String dataPath = TestConstant.TEST_RESOURCES_DIR + path;	
 		PrintStream ps = new PrintStream(dataPath);	
-		ps.println(mGroupBundle.getGroupAmount());
+		ps.println(mGroupBundle.getGroupAmount() + "," + mGroupBundle.getSeparator());
 		for (int i = mGroupBundle.getGroupAmount(); i > 0; i--){			
 			ps.println(StringUtils.join(mGroupBundle.getGroup(i - 1), ","));
 			//System.out.println(StringUtils.join(mGroupBundle.getGroup(i), ","));

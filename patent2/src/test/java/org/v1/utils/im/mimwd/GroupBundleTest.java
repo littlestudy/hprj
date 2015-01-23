@@ -1,4 +1,4 @@
-package org.v1.utils.mimwd;
+package org.v1.utils.im.mimwd;
 
 import java.util.ArrayList;
 import java.util.List;
