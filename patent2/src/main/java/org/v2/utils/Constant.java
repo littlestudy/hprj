@@ -43,5 +43,5 @@ public class Constant {
 		
 	public static final String DEFAULT_SEPARATOR = "##";
 	
-	public static final String DEFAULT_RESOURCES_DIR = System.getProperty("user.dir") + "/src/main/resources/";
+	public static final String DEFAULT_RESOURCES_DIR = System.getProperty("user.dir") + "/src/test/resources/";
 }

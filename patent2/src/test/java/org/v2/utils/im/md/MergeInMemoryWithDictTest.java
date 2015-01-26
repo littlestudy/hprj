@@ -11,14 +11,14 @@ import org.junit.Before;
 import org.junit.Test;
 import org.v2.common.DataBlock;
 
-
 public class MergeInMemoryWithDictTest {
 	List<String> values;
 	List<String[]> groupList;
 
 	@Before
 	public void setUp() throws Exception {
-		String dataPath = System.getProperty("user.dir") + "/src/test/resources/data/TreeRecordTestData.txt";		
+		//String dataPath = System.getProperty("user.dir") + "/src/test/resources/data/TreeRecordTestData.txt";
+		String dataPath = "/home/htmp/output/testcsvGroup/part-m-00000";		
 		values = new ArrayList<String>();
 		LineIterator iter = IOUtils.lineIterator(new FileReader(dataPath));
 		while (iter.hasNext())
@@ -37,14 +37,16 @@ public class MergeInMemoryWithDictTest {
 	}
 
 	@Test
-	public void testMergeInMemory() {		
+	public void testMergeInMemory() throws Exception {		
 		DataBlock dataBlock = null;
 		Iterator<String> iter = values.iterator(); 
+		
 		while (true){
 			MergeInMemoryWithDict md = new MergeInMemoryWithDict(groupList);
-			dataBlock = md.mergeInMemory(iter, 3);
+			dataBlock = md.mergeInMemory(iter, 10);
 			dataBlock.showRecords();
 			dataBlock.showDictionaryBundle();
+			dataBlock.save("/home/htmp/output/ccc/all");
 			System.out.println("----------------------------");
 			if (!iter.hasNext())
 				break;

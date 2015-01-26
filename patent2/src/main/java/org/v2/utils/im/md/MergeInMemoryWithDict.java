@@ -10,6 +10,7 @@ import org.v2.common.CDictionaryBundle;
 import org.v2.common.DataBlock;
 import org.v2.common.GroupBundle;
 import org.v2.common.TreeRecord;
+import org.v2.utils.Constant;
 
 public class MergeInMemoryWithDict {
 	
@@ -23,7 +24,11 @@ public class MergeInMemoryWithDict {
 	 * 一般重复率高的归并顺序靠后
 	 */
 	public MergeInMemoryWithDict(List<String[]> group){		
-		groupBundle = new GroupBundle(group);		
+		this(group, Constant.DEFAULT_SEPARATOR);
+	}
+	
+	public MergeInMemoryWithDict(List<String[]> group, String groupSeparator){		
+		groupBundle = new GroupBundle(group, groupSeparator);		
 		dictionaryBundle = new CDictionaryBundle(groupBundle.getFieldAmount());
 	}
 	
@@ -90,6 +95,8 @@ public class MergeInMemoryWithDict {
 		for (int i = 0; i < recordNumber; i++){
 			if (iter.hasNext())
 				records.add(TreeRecord.fromOriginalString(iter.next()));
+			else
+				break;
 		}					
 	}	
 }

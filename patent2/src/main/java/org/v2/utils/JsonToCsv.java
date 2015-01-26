@@ -6,7 +6,7 @@ import org.json.simple.parser.ParseException;
 import org.v2.common.GroupBundle;
 
 public class JsonToCsv {
-	private String groupSeparator;
+	
 	private GroupBundle groupBundle;
 	private JSONParser parser = new JSONParser();
 	
@@ -15,7 +15,7 @@ public class JsonToCsv {
 	}
 	
 	public void setGroupSeparator(String groupSeparator){
-		this.groupSeparator = groupSeparator;
+		this.groupBundle.setSeparator(groupSeparator);
 	}
 
 	public String jsonStringToCsv(String jsonString) {
@@ -37,13 +37,13 @@ public class JsonToCsv {
 						tsb.append("," + fieldStr);
 					}
 				}
-				sb.append(tsb.toString().substring(1) + groupSeparator);
+				sb.append(tsb.toString().substring(1) + groupBundle.getSeparator());
 			}
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
-		//System.out.println("json to csv: " + sb.toString().substring(0, sb.toString().length() - 2));
-		return sb.toString().substring(0, sb.toString().length() - groupSeparator.length());
+		System.out.println("json to csv: " + sb.toString().substring(0, sb.toString().length() - 2));
+		return sb.toString().substring(0, sb.toString().length() - groupBundle.getSeparator().length());
 	}
 
 	private String replaceStr(String line) {

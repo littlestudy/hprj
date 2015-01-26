@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
-import org.v1.utils.im.mimwd.TestConstant;
 
 public class DataBlock {
 	private CDictionaryBundle mDictionaryBundle;
@@ -59,7 +58,8 @@ public class DataBlock {
 	}
 	
 	public void save(String path) throws Exception{
-		String dataPath = TestConstant.TEST_RESOURCES_DIR + path;	
+		//String dataPath = TestConstant.TEST_RESOURCES_DIR + path;
+		String dataPath = path;	
 		PrintStream ps = new PrintStream(dataPath);	
 		ps.println(mGroupBundle.getGroupAmount() + "," + mGroupBundle.getSeparator());
 		for (int i = mGroupBundle.getGroupAmount(); i > 0; i--){			
