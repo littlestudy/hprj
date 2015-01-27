@@ -26,7 +26,7 @@ public class JsonToCsvMapReduce extends BaseMapReduce{
 		args = new String[] {
 				//"hdfs://master:9000/user/hadoop/data/o100R",
 				Constant.DEFAULT_RESOURCES_DIR + "/data/jsondata.txt",
-				"/home/htmp/output/testcsvGroup"
+				"/home/htmp/output/testcsvGroup5"
 		};
 		int res = ToolRunner.run(new Configuration(),  new JsonToCsvMapReduce(), args);
 		System.exit(res);
@@ -45,7 +45,7 @@ public class JsonToCsvMapReduce extends BaseMapReduce{
 		job.setMapperClass(MappClass.class);
 		job.setNumReduceTasks(0);
 
-		BaseDataInputFormat.setDataConvert(new JsonToCsvConvert(new GroupBundle(Constant.getTestGroups())));
+		BaseDataInputFormat.setDataConvert(new JsonToCsvConvert(new GroupBundle(Constant.getTestGroups(), "##")));
 		job.setInputFormatClass(BaseDataInputFormat.class);
 
 		job.setMapOutputKeyClass(NullWritable.class);

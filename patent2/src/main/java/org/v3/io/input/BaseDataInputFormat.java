@@ -43,6 +43,7 @@ public class BaseDataInputFormat extends FileInputFormat<LongWritable, Text>{
 		public boolean nextKeyValue() throws IOException, InterruptedException {
 			while (reader.nextKeyValue()){
 				String value = dataCovert.dataFormat(reader.getCurrentValue().toString());
+				//System.out.println("value: " + value);
 				if (value != null){
 					value_.set(value);
 					return true;
@@ -59,7 +60,7 @@ public class BaseDataInputFormat extends FileInputFormat<LongWritable, Text>{
 
 		@Override
 		public Text getCurrentValue() throws IOException, InterruptedException {
-			return reader.getCurrentValue();
+			return value_;
 		}
 
 		@Override

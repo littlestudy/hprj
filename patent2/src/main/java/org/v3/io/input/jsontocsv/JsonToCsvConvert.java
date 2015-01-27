@@ -43,7 +43,7 @@ public class JsonToCsvConvert extends BaseDataConvert{
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
-		System.out.println("json to csv: " + sb.toString().substring(0, sb.toString().length() - 2));
+		//System.out.println("json to csv: " + sb.toString().substring(0, sb.toString().length() - 2));
 		return sb.toString().substring(0, sb.toString().length() - groupBundle.getSeparator().length());
 	}
 

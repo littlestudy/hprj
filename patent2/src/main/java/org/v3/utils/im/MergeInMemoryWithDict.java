@@ -6,11 +6,11 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.v2.common.CDictionaryBundle;
-import org.v2.common.DataBlock;
-import org.v2.common.GroupBundle;
-import org.v2.common.TreeRecord;
-import org.v2.utils.Constant;
+import org.v3.common.CDictionaryBundle;
+import org.v3.common.DataBlock;
+import org.v3.common.GroupBundle;
+import org.v3.common.TreeRecord;
+import org.v3.utils.Constant;
 
 public class MergeInMemoryWithDict {
 	
