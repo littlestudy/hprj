@@ -19,7 +19,7 @@ public class RestoreInMemoryWithDictTest {
 	
 	@Before
 	public void setUp() throws Exception {
-		String dbtestFile = "/home/htmp/output/ccc/y1";
+		String dbtestFile = "/home/ym/ytmp/hadoopexp/output/ccc/y1";
 		LineIterator iter = IOUtils.lineIterator(new FileReader(dbtestFile));
 				
 		int amount = 0;

@@ -17,8 +17,8 @@ public class MergeInMemoryWithDictTest {
 
 	@Before
 	public void setUp() throws Exception {
-		//String dataPath = System.getProperty("user.dir") + "/src/test/resources/data/TreeRecordTestData.txt";
-		String dataPath = "/home/htmp/output/testcsvGroup5/part-m-00000";		
+		String dataPath = System.getProperty("user.dir") + "/src/test/resources/data/TreeRecordTestData.txt";
+		//String dataPath = "/home/htmp/output/testcsvGroup5/part-m-00000";		
 		values = new ArrayList<String>();
 		LineIterator iter = IOUtils.lineIterator(new FileReader(dataPath));
 		while (iter.hasNext())
@@ -46,7 +46,7 @@ public class MergeInMemoryWithDictTest {
 			dataBlock = md.mergeInMemory(iter, 3);
 			dataBlock.showRecords();
 			dataBlock.showDictionaryBundle();
-			dataBlock.save("/home/htmp/output/ccc/y" + i++);
+			dataBlock.save("/home/ym/ytmp/hadoopexp/output/ccc/y" + i++);
 			System.out.println("----------------------------");
 			if (!iter.hasNext())
 				break;

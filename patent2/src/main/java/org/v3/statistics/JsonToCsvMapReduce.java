@@ -26,7 +26,7 @@ public class JsonToCsvMapReduce extends BaseMapReduce{
 		args = new String[] {
 				//"hdfs://master:9000/user/hadoop/data/o100R",
 				Constant.DEFAULT_RESOURCES_DIR + "/data/jsondata.txt",
-				"/home/htmp/output/testcsvGroup5"
+				"/home/ym/ytmp/output/testcsvGroup5"
 		};
 		int res = ToolRunner.run(new Configuration(),  new JsonToCsvMapReduce(), args);
 		System.exit(res);
@@ -48,8 +48,8 @@ public class JsonToCsvMapReduce extends BaseMapReduce{
 		BaseDataInputFormat.setDataConvert(new JsonToCsvConvert(new GroupBundle(Constant.getTestGroups(), "##")));
 		job.setInputFormatClass(BaseDataInputFormat.class);
 
-		job.setMapOutputKeyClass(NullWritable.class);
-		job.setMapOutputValueClass(Text.class);
+		job.setMapOutputKeyClass(Text.class);
+		job.setMapOutputValueClass(NullWritable.class);
 		
 		FileInputFormat.setInputPaths(job, inputPath);
 		FileOutputFormat.setOutputPath(job, outputPath);
@@ -61,7 +61,7 @@ public class JsonToCsvMapReduce extends BaseMapReduce{
 	}
 	
 	public static class MappClass extends
-			BaseMapper<LongWritable, Text, NullWritable, Text> {
+			BaseMapper<LongWritable, Text, Text, NullWritable> {
 		
 		public MappClass() {
 			super(MappClass.class);
@@ -71,7 +71,7 @@ public class JsonToCsvMapReduce extends BaseMapReduce{
 		protected void map(LongWritable key, Text value, Context context)
 				throws IOException, InterruptedException {
 			//System.out.println("value: " + value.toString());
-			context.write(NullWritable.get(), value);
+			context.write(value, NullWritable.get());
 		}
 	}
 }
