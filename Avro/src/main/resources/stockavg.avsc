@@ -1,0 +1,9 @@
+{
+  "name": "StockAvg",
+  "type": "record",
+  "namespace": "org.stu.example.gen",
+  "fields": [
+    {"name": "symbol",    "type": "string"},
+    {"name": "avg",      "type": "double"}
+  ]
+}
