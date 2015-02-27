@@ -1,4 +1,4 @@
-package org.stu.example.smallfiles;
+package org.test;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -19,7 +19,7 @@ public class SmallFilesRead extends Base{
 	
 	public static void main(String[] args) throws Exception {
 		args = new String[] {
-				"/tmp/files.avro"
+				"hdfs://master:9000/tmp/files.avro"
 		};
 		int res = ToolRunner.run(new Configuration(), new SmallFilesRead(), args);
 		System.exit(res);
