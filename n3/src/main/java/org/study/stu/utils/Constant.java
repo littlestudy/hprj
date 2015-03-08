@@ -46,4 +46,6 @@ public class Constant {
 	public static final String DEFAULT_RESOURCES_DIR = System.getProperty("user.dir") + "/src/test/resources/";
 	
 	public static final String TEST_GROUP_BUNDLE_STR = "field0##field1,field2,field3##field4,field5";
+	
+	public static final String TEST_GROUPS_STR = "field0,field1,field2,field3,field4,field5";
 }

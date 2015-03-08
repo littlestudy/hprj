@@ -6,7 +6,7 @@ import org.json.simple.parser.ParseException;
 import org.study.stu.common.GroupBundle;
 
 
-public class JsonToCsvConvert extends DataConvertBase{
+public class JsonToCsvConvert extends BaseDataConvert{
 
 	private JSONParser parser = new JSONParser();
 	

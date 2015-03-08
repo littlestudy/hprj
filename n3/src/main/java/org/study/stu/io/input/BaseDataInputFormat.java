@@ -9,11 +9,11 @@ import org.apache.hadoop.mapreduce.RecordReader;
 import org.apache.hadoop.mapreduce.TaskAttemptContext;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.input.LineRecordReader;
-import org.study.stu.utils.DataConvertBase;
+import org.study.stu.utils.BaseDataConvert;
 
 public class BaseDataInputFormat extends FileInputFormat<LongWritable, Text>{
 
-	private static DataConvertBase dataConvert;
+	private static BaseDataConvert dataConvert;
 	
 	@Override
 	public RecordReader<LongWritable, Text> createRecordReader(
@@ -28,9 +28,9 @@ public class BaseDataInputFormat extends FileInputFormat<LongWritable, Text>{
 		private LineRecordReader reader = new LineRecordReader();
 	
 		private final Text value_ = new Text();		
-		private DataConvertBase dataCovert;
+		private BaseDataConvert dataCovert;
 	
-		public BaseDataRecordReader(DataConvertBase dataConvert){
+		public BaseDataRecordReader(BaseDataConvert dataConvert){
 			this.dataCovert = dataConvert;
 		}
 		
@@ -75,7 +75,7 @@ public class BaseDataInputFormat extends FileInputFormat<LongWritable, Text>{
 		}
 	}
 	
-	public static void setDataConvert(DataConvertBase baseDataConvert){
+	public static void setDataConvert(BaseDataConvert baseDataConvert){
 		dataConvert = baseDataConvert;
 	}
 }

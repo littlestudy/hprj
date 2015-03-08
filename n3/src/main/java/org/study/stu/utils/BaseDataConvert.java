@@ -2,11 +2,11 @@ package org.study.stu.utils;
 
 import org.study.stu.common.GroupBundle;
 
-public abstract class DataConvertBase {
+public abstract class BaseDataConvert {
 	
 	protected GroupBundle groupBundle;
 	
-	public DataConvertBase(GroupBundle groupBundle){
+	public BaseDataConvert(GroupBundle groupBundle){
 		this.groupBundle = groupBundle;
 	}
 	
