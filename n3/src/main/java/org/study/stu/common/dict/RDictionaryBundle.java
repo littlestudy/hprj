@@ -37,7 +37,11 @@ public class RDictionaryBundle {
 				map.put(dataInput.readInt(), val);
 			}
 		}
-
+		
+		public int dictSize(){
+			return map.size();
+		}
+		
 		public void showDictionary(){ 
 			Iterator<Entry<Integer, String>> iter = map.entrySet().iterator();
 			while(iter.hasNext()){
@@ -68,5 +72,9 @@ public class RDictionaryBundle {
 			System.out.println("Dictionary Number: " + i);
 			bundle.get(i).showDictionary();
 		}			
+	}
+	
+	public int getDictionarySize(int dictNum){
+		return bundle.get(dictNum).dictSize();
 	}
 }

@@ -48,4 +48,22 @@ public class Constant {
 	public static final String TEST_GROUP_BUNDLE_STR = "field0##field1,field2,field3##field4,field5";
 	
 	public static final String TEST_GROUPS_STR = "field0,field1,field2,field3,field4,field5";
+	
+	public static final String TEST_GROUP_BUNDLE_STR2 = 
+			"appKey,appVersion,dataType##"
+			+ "city,ip,isp,logCity,logProvince##"
+			+ "deviceCarrier,deviceHashMac,deviceIMEI,deviceMacAddr,deviceModel,deviceNetwork,deviceOs,deviceOsVersion,deviceResolution,deviceUdid,appChannel##"  
+			+ "userName##"
+			+ "occurTime,persistedTime##"
+			+ "eventId,costTime,logSource##"
+			+ "sessionStep";
+	
+	public static final String TEST_GROUPS_STR2 = 			
+			"appKey,appVersion,dataType"
+			+ "city,ip,isp,logCity,logProvince"
+			+ "deviceCarrier,deviceHashMac,deviceIMEI,deviceMacAddr,deviceModel,deviceNetwork,deviceOs,deviceOsVersion,deviceResolution,deviceUdid,appChannel"  
+			+ "userName"
+			+ "occurTime,persistedTime"
+			+ "eventId,costTime,logSource"
+			+ "sessionStep";
 }

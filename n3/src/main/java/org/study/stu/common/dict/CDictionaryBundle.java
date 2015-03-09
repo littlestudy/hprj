@@ -47,6 +47,10 @@ public class CDictionaryBundle {
 			return code;
 		}
 		
+		public int dictSize(){
+			return map.size();
+		}
+		
 		public void showDictionary(){
 			Iterator<Entry<String, Integer>> iter = map.entrySet().iterator();
 			while(iter.hasNext()){
@@ -139,5 +143,9 @@ public class CDictionaryBundle {
 	
 	public void setDictFromByteBuffer(int dictNum, ByteBuffer bb) throws IOException{
 		bundle.get(dictNum).fromByteBuffer(bb);
+	}
+	
+	public int getDictionarySize(int dictNum){
+		return bundle.get(dictNum).dictSize();
 	}
 }
