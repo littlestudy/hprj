@@ -17,13 +17,11 @@ import org.study.stu.file.TreeRecordRead;
 public class TreeRecordReadExample {
 
 	public static void main(String[] args) throws IOException {
-		InputStream inputStream = new FileInputStream("/home/ym/ytmp/output/500kR.avro");
+		InputStream inputStream = new FileInputStream("/home/ym/ytmp/output/new111.avro");
 		TreeRecordRead reader = new TreeRecordRead(inputStream);
-		PrintStream ps = new PrintStream("/home/ym/ytmp/output/test3");
-		long totalDictSize = 0;
+		PrintStream ps = new PrintStream("/home/ym/ytmp/output/test4");
 		int dictSize = 0;
 		for (Object o : reader){
-			dictSize = 0;
 			GenericRecord r = (GenericRecord) o;
 			
 			ByteBuffer groupBundleBytes = (ByteBuffer)r.get(DataBlock.GROUP_BUNDLE);
@@ -35,9 +33,7 @@ public class TreeRecordReadExample {
 			//System.out.println(DataBlock.DICTIONARY_AMOUNT + ": " + dictAmount);			
 			for (int i = 0; i < dictAmount; i++){
 				rimw.setDictFromByteBuffer(i, (ByteBuffer)r.get(DataBlock.DICTIONARY + i));
-				dictSize = rimw.getDictionaryBundle().getDictionarySize(i);
-				totalDictSize += dictSize;
-				//System.out.println("No " + i + ": " + dictSize);
+				dictSize += rimw.getDictionaryBundle().getDictionarySize(i);
 			}			
 			
 			
@@ -55,11 +51,9 @@ public class TreeRecordReadExample {
 				//System.out.println(tree);
 				for (String str : rimw.restoreInMemory(tree))
 					ps.println(str);
-			//		System.out.println(str);
-			}
-			//System.out.println("----------------------");
+			}			
 		}		
-		System.out.println("Dict size sum: " + totalDictSize);
+		System.out.println("Dict size sum: " + dictSize);
 		ps.close();
 		inputStream.close();
 		reader.cleanup();

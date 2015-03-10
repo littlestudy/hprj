@@ -1,6 +1,10 @@
 package org.study.stu.example.mapreduce;
 
+import java.io.ByteArrayInputStream;
+import java.io.DataInput;
+import java.io.DataInputStream;
 import java.io.IOException;
+import java.nio.ByteBuffer;
 import java.util.Iterator;
 
 import org.apache.avro.generic.GenericRecord;
@@ -30,6 +34,7 @@ import org.apache.hadoop.util.ToolRunner;
 import org.study.stu.common.DataBlock;
 import org.study.stu.common.GroupBundle;
 import org.study.stu.common.MergeInMemoryWithDict;
+import org.study.stu.common.dict.CDictionaryBundle;
 import org.study.stu.utils.BaseDataConvert;
 import org.study.stu.utils.Constant;
 import org.study.stu.utils.JsonToCsvConvert;
@@ -38,8 +43,8 @@ public class AvroMixedMapReduce1 extends Configured implements Tool{
 
 	public static void main(String[] args) throws Exception {
 		args = new String [] {
-				"/home/ym/data/1mRsample",
-				"/home/ym/ytmp/output/nelog"
+				Constant.DEFAULT_RESOURCES_DIR + "/data/jsondata.txt",
+				"/home/ym/ytmp/output/testcsvGroup"
 		};
 		int res = ToolRunner.run(new Configuration(),  new AvroMixedMapReduce1(), args);
 		System.exit(res);
@@ -54,7 +59,7 @@ public class AvroMixedMapReduce1 extends Configured implements Tool{
 		JobConf job = new JobConf(conf);
 		job.setJarByClass(AvroMixedMapReduce1.class);
 		
-		job.set(AvroJob.OUTPUT_SCHEMA, DataBlock.getRecordSchema(26).toString());
+		job.set(AvroJob.OUTPUT_SCHEMA, DataBlock.getRecordSchema(6).toString());
 		job.set(AvroJob.OUTPUT_CODEC, SnappyCodec.class.getName());
 		
 		job.setInputFormat(TextInputFormat.class);
@@ -78,7 +83,7 @@ public class AvroMixedMapReduce1 extends Configured implements Tool{
 		extends MapReduceBase implements Mapper<LongWritable, Text, IntWritable, Text>{
 
 		private static BaseDataConvert dataConvet 
-			= new JsonToCsvConvert(new GroupBundle(Constant.TEST_EN_GROUP_BUNDLE, Constant.DEFAULT_SEPARATOR)); 
+			= new JsonToCsvConvert(new GroupBundle(Constant.TEST_GROUP_BUNDLE_STR, Constant.DEFAULT_SEPARATOR)); 
 		
 		private IntWritable outputKey = new IntWritable();
 			
@@ -87,11 +92,11 @@ public class AvroMixedMapReduce1 extends Configured implements Tool{
 						 Text value,
 						 OutputCollector<IntWritable, Text> output, 
 						 Reporter reporter)
-				throws IOException {			
+				throws IOException {
 			String v = dataConvet.dataFormat(value.toString());
-			outputKey.set(v.toString().substring(0, Math.min(3, v.length())).hashCode());
+			outputKey.set(v.toString().substring(0, Math.min(1, v.length())).hashCode());
 			
-			
+			//System.out.println(outputKey.get() + ": " + v);
 			output.collect(outputKey, new Text(v));
 		}		
 	}
@@ -104,23 +109,22 @@ public class AvroMixedMapReduce1 extends Configured implements Tool{
 				Iterator<Text> values,
 				OutputCollector<AvroWrapper<GenericRecord>, NullWritable> output,
 				Reporter reporter) throws IOException {
-			System.out.println("reduce!!");
 			
 			MergeInMemoryWithDict md 
-				= new MergeInMemoryWithDict(Constant.TEST_EN_GROUP_BUNDLE, Constant.DEFAULT_SEPARATOR);
+				= new MergeInMemoryWithDict(Constant.TEST_GROUP_BUNDLE_STR, Constant.DEFAULT_SEPARATOR);
 			
 			while (values.hasNext()){
 			//	System.out.println(key.get() + ": " + values.next());
-				DataBlock dataBlock = md.mergeInMemory(values, 2000);
-				//dataBlock.showRecords();
-				//dataBlock.showDictionaryBundle();
+				DataBlock dataBlock = md.mergeInMemory(values, 6);
+				dataBlock.showRecords();
+				dataBlock.showDictionaryBundle();
 				
-				//System.out.println("&&&&&&&&&&&&&&");
+				System.out.println("&&&&&&&&&&&&&&");
 				
 				md.clear();		
 				GenericRecord r = dataBlock.toRecord();			
 				output.collect(new AvroWrapper<GenericRecord>(r), NullWritable.get());
-				/*
+				
 				System.out.println(DataBlock.GROUP_BUNDLE + ": " + r.get(DataBlock.GROUP_BUNDLE));
 			
 				int dictAmount = (int) r.get(DataBlock.DICTIONARY_AMOUNT);
@@ -141,7 +145,6 @@ public class AvroMixedMapReduce1 extends Configured implements Tool{
 					System.out.println(dataInput.readUTF());
 			
 				System.out.println("-------------------------------------------------------");
-				*/
 			
 			}			
 		}		

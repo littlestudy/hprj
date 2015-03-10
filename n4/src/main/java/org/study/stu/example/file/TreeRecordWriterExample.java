@@ -19,16 +19,16 @@ public class TreeRecordWriterExample {
 
 	public static void main(String[] args) throws IOException {		
 		TreeRecordWriter writer = new TreeRecordWriter();
-		OutputStream os = new FileOutputStream("/home/ym/ytmp/output/500kR3.avro");
-		writer.setSyncInterval(20000);
+		OutputStream os = new FileOutputStream("/home/ym/ytmp/output/new111.avro");
+		writer.setSyncInterval(1000);
 		writer.setCodec(CodecFactory.snappyCodec());
 		writer.create(DataBlock.getRecordSchema(26), os);
 		
 		MergeInMemoryWithDict md =
-				new MergeInMemoryWithDict(Constant.TEST_EN_GROUP_BUNDLE, Constant.DEFAULT_SEPARATOR);
+				new MergeInMemoryWithDict(Constant.TEST_NE_GROUP_BUNDLE_STR, Constant.DEFAULT_SEPARATOR);
 		JsonToCsvTextIterator iter = IOUtils.jsonToCsvTextIterator(
 					new FileReader("/home/ym/data/500kR"), 
-					new JsonToCsvConvert(new GroupBundle(Constant.TEST_EN_GROUP_BUNDLE, Constant.DEFAULT_SEPARATOR)));
+					new JsonToCsvConvert(new GroupBundle(Constant.TEST_NE_GROUP_BUNDLE_STR, Constant.DEFAULT_SEPARATOR)));
 		DataBlock dataBlock = null;
 		while (iter.hasNext()){
 			dataBlock = md.mergeInMemory(iter, 20000);

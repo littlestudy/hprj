@@ -34,8 +34,8 @@ public class AvroMixedMapReduce2 extends Configured implements Tool{
 
 	public static void main(String[] args) throws Exception {
 		args = new String [] {
-				"/home/ym/ytmp/output/nelog/part-00000.avro",
-				"/home/ym/ytmp/output/nelog2"
+				"/home/ym/ytmp/output/testcsvGroup/part-00000.avro",
+				"/home/ym/ytmp/output/testcsvGroup2"
 		};
 		int res = ToolRunner.run(new Configuration(),  new AvroMixedMapReduce2(), args);
 		System.exit(res);
@@ -50,7 +50,7 @@ public class AvroMixedMapReduce2 extends Configured implements Tool{
 		JobConf job = new JobConf(conf);
 		job.setJarByClass(AvroMixedMapReduce2.class);
 		
-		job.set(AvroJob.INPUT_SCHEMA, DataBlock.getRecordSchema(26).toString());
+		job.set(AvroJob.INPUT_SCHEMA, DataBlock.getRecordSchema(6).toString());
 				
 		job.setInputFormat(AvroInputFormat.class);
 				

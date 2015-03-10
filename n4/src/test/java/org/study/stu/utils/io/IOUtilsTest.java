@@ -2,7 +2,6 @@ package org.study.stu.utils.io;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.PrintStream;
 
 import org.junit.Test;
 import org.study.stu.common.GroupBundle;
@@ -15,15 +14,11 @@ public class IOUtilsTest {
 	@Test
 	public void testJsonToCsvIterator() throws FileNotFoundException {
 		BaseDataConvert dataConvert = 
-				new JsonToCsvConvert(new GroupBundle(Constant.TEST_EN_GROUP_BUNDLE2, ","));
+				new JsonToCsvConvert(new GroupBundle(Constant.TEST_GROUPS_STR, ","));
 		JsonToCsvIterator iter = IOUtils.jsonToCsvIterator(
-				new FileReader("/home/ym/data/500kR"), dataConvert);
-				
-		PrintStream ps = new PrintStream("/home/ym/data/500kR-H");
+				new FileReader(Constant.DEFAULT_RESOURCES_DIR + "/data/jsondata.txt"), dataConvert);
 		while(iter.hasNext())
-			ps.println(iter.next());
-		ps.close();
-		
+			System.out.println(iter.next());
 	}
 
 }

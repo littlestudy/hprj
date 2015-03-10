@@ -16,11 +16,11 @@ import org.study.stu.common.dict.CDictionaryBundle;
 
 public class DataBlock {
 		
-	public static final String DICTIONARY_AMOUNT = "DA";
-	public static final String DICTIONARY = "D";
-	public static final String RECORDS = "R";
-	public static final String GROUP_BUNDLE = "G";
-	public static final String RECORD_AMOUNT = "RA";
+	public static final String DICTIONARY_AMOUNT = "DictionaryAmount";
+	public static final String DICTIONARY = "Dictionary";
+	public static final String RECORDS = "Records";
+	public static final String GROUP_BUNDLE = "GroupBundle";
+	public static final String RECORD_AMOUNT = "RecordAmount";
 	
 	private static Schema SCHEMA = null;
 	
@@ -135,13 +135,13 @@ public class DataBlock {
 			record.put(DICTIONARY + i, mDictionaryBundle.getByteBufferFromDict(i));
 		
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		DataOutput dataOutput = new DataOutputStream(baos);		
+		DataOutput dataOutput = new DataOutputStream(baos);
 		for (int i = 0; i < mRecords.size(); i++){
-			byte[] recordBytes = mRecords.get(i).getBytes("UTF8");
-			dataOutput.writeInt(recordBytes.length);
-			dataOutput.write(recordBytes, 0, recordBytes.length);
+			byte[] buf = mRecords.get(i).getBytes("UTF8");
+			dataOutput.writeInt(buf.length);
+			dataOutput.write(buf, 0, buf.length);
+			//dataOutput.writeUTF(mRecords.get(i));
 		}
-		
 		record.put(RECORD_AMOUNT, mRecords.size());
 		record.put(RECORDS, ByteBuffer.wrap(baos.toByteArray()));
 		
