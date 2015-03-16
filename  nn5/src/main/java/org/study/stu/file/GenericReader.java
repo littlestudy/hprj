@@ -9,21 +9,16 @@ import java.util.Iterator;
 import java.util.Map;
 
 import org.apache.avro.file.Codec;
+import org.apache.avro.file.SeekableInput;
 import org.study.stu.common.DataBlock;
 import org.study.stu.utils.DataFileConstants;
 
 public class GenericReader implements Iterator<DataBlock>, Iterable<DataBlock>, Closeable{
-
-	public static final class Header {
-		Map<String,byte[]> meta = new HashMap<String,byte[]>();    
-		byte[] sync = new byte[DataFileConstants.SYNC_SIZE];
-		private Header() {}
-	}
-
-	private Header header;
+	private GenericDataReader reader;
+	
 	private ByteBuffer blockBuffer;
 	private byte[] syncBuffer = new byte[DataFileConstants.SYNC_SIZE];
-	private Codec codec;
+	private Codec codec;	
 	
 	public GenericReader(InputStream in){
 		
@@ -58,4 +53,7 @@ public class GenericReader implements Iterator<DataBlock>, Iterable<DataBlock>, 
 		// TODO Auto-generated method stub
 		
 	}
+	
+	
+
 }

@@ -16,10 +16,11 @@ public class StudyInputFormat extends FileInputFormat<DataBlock, NullWritable>{
 
 		private GenericReader reader;
 		
+		
 		@Override
 		public void initialize(InputSplit split, TaskAttemptContext context)
 				throws IOException, InterruptedException {
-			// TODO Auto-generated method stub
+
 			
 		}
 

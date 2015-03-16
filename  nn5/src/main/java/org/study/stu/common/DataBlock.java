@@ -24,6 +24,9 @@ public class DataBlock implements Writable{
 		blockSize = data.length;
 	}
 	
+	public DataBlock(){		
+	}
+	
 	@Override
 	public void write(DataOutput out) throws IOException {
 		out.writeInt(blockSize);
@@ -32,8 +35,13 @@ public class DataBlock implements Writable{
 
 	@Override
 	public void readFields(DataInput in) throws IOException {
-		
-		
+		blockSize = in.readInt();
+		data = new byte[blockSize];
+		in.readFully(data);		
+	}
+	
+	public boolean isAvailable(){
+		return blockSize > 0;
 	}
 	
 	public void compressUsing(Codec c) throws IOException {
