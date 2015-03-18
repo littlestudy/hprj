@@ -50,13 +50,16 @@ public class JsonToCsvMapReduce extends Configured implements Tool{
 		Path inputPath = new Path(args[0]);
 		Path outputPath = new Path(args[1]);
 		
-		Configuration conf = new Configuration();
 		
+		
+		Configuration conf = new Configuration();
+		long size = inputPath.getFileSystem(conf).getFileStatus(inputPath).getBlockSize();
+		System.out.println(size);
 		Job job = Job.getInstance(conf);
 		job.setJarByClass(JsonToCsvMapReduce.class);
 
 		job.setMapperClass(MappClass.class);
-		job.setReducerClass(ReducerClass.class);
+		job.setReducerClass(ReducerClass2.class);
 
 		BaseDataInputFormat.setDataConvert(new JsonToCsvConvert(
 								new GroupBundle(Constant.TEST_GROUP_BUNDLE_STR, Constant.DEFAULT_SEPARATOR)));
@@ -86,6 +89,16 @@ public class JsonToCsvMapReduce extends Configured implements Tool{
 		}
 	}
 	
+	public static class ReducerClass2 extends Reducer<IntWritable, Text, Text, Text>{
+		@Override
+		protected void reduce(IntWritable key, Iterable<Text> values,
+				Context context)
+				throws IOException, InterruptedException {
+			
+		}
+	}
+	
+	/*
 	public static class ReducerClass extends Reducer<IntWritable, Text, Text, Text>{
 		@Override
 		protected void reduce(IntWritable key, Iterable<Text> values, Context context)
@@ -129,4 +142,5 @@ public class JsonToCsvMapReduce extends Configured implements Tool{
 			///context.write(new Text(key), new Text());
 		}
 	}
+	*/
 }

@@ -16,7 +16,7 @@ import org.study.stu.file.NullCodec;
 import org.study.stu.file.SnappyCodec;
 import org.study.stu.utils.DataFileConstants;
 
-public class StudyOutputFormat extends FileOutputFormat<DataBlock, NullWritable>{
+public class StuOutputFormat extends FileOutputFormat<DataBlock, NullWritable>{
 
 	public static class StuWriter extends RecordWriter<DataBlock, NullWritable>{
 
@@ -38,6 +38,7 @@ public class StudyOutputFormat extends FileOutputFormat<DataBlock, NullWritable>
 		@Override
 		public void close(TaskAttemptContext context) throws IOException,
 				InterruptedException {
+			//writer.append(DataBlock.EndBlock);
 			writer.close();			
 			writer = null;
 		}		

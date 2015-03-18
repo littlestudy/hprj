@@ -35,7 +35,7 @@ public class GenericDataReader implements Iterator<DataBlock>, Iterable<DataBloc
 		private Header() {}
 	}
 	
-	public static GenericDataReader openReader(SeekableInputStream in) throws IOException{
+	public static GenericDataReader openReader(SeekableInput in) throws IOException{
 		if (in.length() <DataFileConstants.MAGIC.length)
 			throw new IOException("Not an Avro data file");
 		byte[] magic = new byte[DataFileConstants.MAGIC.length];
@@ -44,27 +44,28 @@ public class GenericDataReader implements Iterator<DataBlock>, Iterable<DataBloc
 		in.seek(0);
 		
 		if (Arrays.equals(DataFileConstants.MAGIC, magic))             
-			return new GenericDataReader(in);
+			return new GenericDataReader((SeekableInput)in);
 		
 		throw new IOException("Not an Avro data file");
 	}
 	
-	public GenericDataReader(SeekableInputStream sin) throws IOException{
+	public GenericDataReader(SeekableInput sin) throws IOException{
 		this.sin = new SeekableInputStream(sin);
-		init(sin);
-		blockStart = sin.tell();
+		init(this.sin);
+		blockStart = this.sin.tell();
+		System.out.println(" ------------> constructer's block start: " + blockStart);
 	}
 
-	private void init(SeekableInputStream sin) throws IOException,
+	private void init(SeekableInput sin) throws IOException,
 			UnsupportedEncodingException {
 		this.header = new Header();
 		byte[] magic = new byte[DataFileConstants.MAGIC.length];
-		sin.read(magic);
+		sin.read(magic, 0, magic.length);
 		
 		if (!Arrays.equals(DataFileConstants.MAGIC, magic))
 			throw new IOException("Not a data file.");
 		
-		dataInput = new DataInputStream(sin);
+		dataInput = new DataInputStream((SeekableInputStream)sin);
 		int mapSize = dataInput.readInt();
 		for (int i = 0; i < mapSize; i++){
 			String key = dataInput.readUTF();
@@ -88,13 +89,16 @@ public class GenericDataReader implements Iterator<DataBlock>, Iterable<DataBloc
 		blockStart = position;
 	}
 	
+	public long tell() throws IOException { 
+		return sin.tell();
+	}
+	
 	public void sync(long position) throws IOException {
+		if (position == 0)
+			return ;
+		
 		seek(position);
 		
-		if (position == 0) {
-			init(sin);                            // re-init to skip header
-			return;
-		}
 		try {
 			int i=0, b;
 			sin.read(syncBuffer);
@@ -121,7 +125,8 @@ public class GenericDataReader implements Iterator<DataBlock>, Iterable<DataBloc
 	}	
 
 	public boolean pastSync(long position) throws IOException {
-		return ((blockStart >= position+DataFileConstants.SYNC_SIZE)||(blockStart >= sin.length()));
+		System.out.println("-------> block start: " + blockStart + ", file length: " + sin.length());
+		return (blockStart >= position+DataFileConstants.SYNC_SIZE);
 	}
 
 	@Override
@@ -131,12 +136,20 @@ public class GenericDataReader implements Iterator<DataBlock>, Iterable<DataBloc
 
 	@Override
 	public boolean hasNext() {
+		try {
+			if (blockStart >= sin.length())
+				return false;
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+		
 		if (!isTaken)
 			return dataBlock.isAvailable();
 		try {
 			dataBlock = new DataBlock();
 			dataBlock.readFields(dataInput);
 			dataInput.readFully(syncBuffer);
+			blockStart = sin.tell();
 			if (!Arrays.equals(syncBuffer, header.sync))
 				throw new IOException("Invalid sync!");
 			isTaken = false;
@@ -247,5 +260,4 @@ public class GenericDataReader implements Iterator<DataBlock>, Iterable<DataBloc
 				   : (int) remaining;
 	   }
 	}
-
 }

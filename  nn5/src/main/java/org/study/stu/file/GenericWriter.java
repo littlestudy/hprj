@@ -1,6 +1,7 @@
 package org.study.stu.file;
 
 import java.io.BufferedOutputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.Closeable;
 import java.io.DataOutput;
 import java.io.DataOutputStream;
@@ -35,7 +36,8 @@ public class GenericWriter implements Closeable, Flushable{
 	public GenericWriter create(OutputStream outs) throws IOException{
 		assertNotOpen();
 		vout = new BufferedOutputStream(outs);
-		dataOutput = new DataOutputStream(vout);
+		
+		dataOutput = new DataOutputStream(outs);
 		this.sync = SyncGenerator.getMD5Sync();
 
 		if (this.codec == null) {
@@ -49,7 +51,7 @@ public class GenericWriter implements Closeable, Flushable{
 			dataOutput.writeInt(entry.getValue().length);
 			dataOutput.write(entry.getValue(), 0, entry.getValue().length);
 		}
-		dataOutput.write(sync, 0, sync.length);		
+		dataOutput.write(sync, 0, sync.length);			
 		
 		this.isOpen = true;
 		

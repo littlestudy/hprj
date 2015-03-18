@@ -15,6 +15,8 @@ import org.study.stu.common.dict.CDictionaryBundle;
 
 public class DataBlock implements Writable{
 
+	public static final DataBlock EndBlock = new DataBlock(-1);
+	
 	private byte[] data;
 	private int blockSize;
 	private final int offset = 0;
@@ -27,30 +29,43 @@ public class DataBlock implements Writable{
 	public DataBlock(){		
 	}
 	
+	public DataBlock(int size){
+		if (size < 0)
+			this.blockSize = size;
+	}
+		
 	@Override
-	public void write(DataOutput out) throws IOException {
+	public void write(DataOutput out) throws IOException {		
 		out.writeInt(blockSize);
-		out.write(data, offset, blockSize);		
+		if (blockSize >= 0)
+			out.write(data, offset, blockSize);		
 	}
 
 	@Override
 	public void readFields(DataInput in) throws IOException {
+		
 		blockSize = in.readInt();
+		if (blockSize < 0)
+			return;
 		data = new byte[blockSize];
 		in.readFully(data);		
 	}
 	
 	public boolean isAvailable(){
-		return blockSize > 0;
+		return blockSize >= 0;
 	}
 	
 	public void compressUsing(Codec c) throws IOException {
+		if (blockSize < 0)
+			return ;
 		ByteBuffer result = c.compress(getAsByteBuffer());
 		data = result.array();
 		blockSize = result.remaining();
     }
     
 	public void decompressUsing(Codec c) throws IOException {
+		if (blockSize < 0)
+			return ;
 		ByteBuffer result = c.decompress(getAsByteBuffer());
 		data = result.array();
 		blockSize = result.remaining();
@@ -59,6 +74,15 @@ public class DataBlock implements Writable{
 	ByteBuffer getAsByteBuffer() {
 		return ByteBuffer.wrap(data, offset, blockSize);
     }
+	
+	@Override
+	public String toString() {
+		return new String(data);
+	}
+	
+	public int getBlockSize(){
+		return this.blockSize;
+	}
 	
 	/*
 	private byte[] data;
