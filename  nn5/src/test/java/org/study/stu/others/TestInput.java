@@ -30,7 +30,7 @@ public class TestInput extends Configured implements Tool{
 
 	@Override
 	public int run(String[] args) throws Exception {
-		Path inputPath = new Path("/home/ym/ytmp/asdg/part-r-00000.stu");	
+		Path inputPath = new Path("/home/ym/ytmp/asdg22/part-r-00000.stu");	
 		Path outputPath = new Path("/home/ym/ytmp/asdg2");
 		long size = inputPath.getFileSystem(getConf()).getFileStatus(inputPath).getBlockSize();
 		FileSystem fs = inputPath.getFileSystem(getConf());

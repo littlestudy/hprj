@@ -38,7 +38,6 @@ public class StuOutputFormat extends FileOutputFormat<DataBlock, NullWritable>{
 		@Override
 		public void close(TaskAttemptContext context) throws IOException,
 				InterruptedException {
-			//writer.append(DataBlock.EndBlock);
 			writer.close();			
 			writer = null;
 		}		

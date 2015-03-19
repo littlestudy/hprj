@@ -68,7 +68,7 @@ public class GenericWriter implements Closeable, Flushable{
 	public GenericWriter setCodec(Codec c) {
 		assertNotOpen();
 		this.codec = c;
-		setMetaInternal(DataFileConstants.CODEC, codec.getName());
+		setMetaInternal(DataFileConstants.CONF_OUTPUT_CODEC, codec.getName());
 		return this;
 	}
 	

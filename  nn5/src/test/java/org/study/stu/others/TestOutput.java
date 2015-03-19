@@ -30,7 +30,7 @@ public class TestOutput extends Configured implements Tool{
 	@Override
 	public int run(String[] args) throws Exception {
 		Path inputPath = new Path("/home/ym/ytmp/testfile");	
-		Path outputPath = new Path("/home/ym/ytmp/asdg");
+		Path outputPath = new Path("/home/ym/ytmp/asdg22");
 		long size = inputPath.getFileSystem(getConf()).getFileStatus(inputPath).getBlockSize();
 		FileSystem fs = inputPath.getFileSystem(getConf());
 		fs.open(inputPath);
@@ -53,6 +53,7 @@ public class TestOutput extends Configured implements Tool{
 		
 		job.getConfiguration().set(DataFileConstants.GROUP_BUNDLE, "1");
 		job.getConfiguration().set(DataFileConstants.GROUP_BUNDLE_SEPARATOR, "0");
+		job.getConfiguration().set(DataFileConstants.CONF_OUTPUT_CODEC, DataFileConstants.SNAPPY_CODEC);
 		
 		FileInputFormat.setInputPaths(job, inputPath);
 		FileOutputFormat.setOutputPath(job, outputPath);

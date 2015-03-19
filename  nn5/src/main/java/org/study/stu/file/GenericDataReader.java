@@ -73,10 +73,11 @@ public class GenericDataReader implements Iterator<DataBlock>, Iterable<DataBloc
 			byte[] value = new byte[len];
 			dataInput.readFully(value);
 			header.meta.put(key, value);
+			System.out.println("---------> key: " + key);
 		}
 		dataInput.readFully(header.sync);	
 		
-		String codecStr = new String(header.meta.get(DataFileConstants.CODEC), "UTF-8");
+		String codecStr = new String(header.meta.get(DataFileConstants.CONF_OUTPUT_CODEC), "UTF-8");
 		if (codecStr.equals(DataFileConstants.NULL_CODEC)) {
 			this.codec = NullCodec.INSTANCE;
 		} else {
