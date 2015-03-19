@@ -22,6 +22,7 @@ public class GenericDataReader implements Iterator<DataBlock>, Iterable<DataBloc
 	
 	private SeekableInputStream sin;
 	private DataInput dataInput;
+	private long nextBlockStart;
 	private long blockStart;
 	private DataBlock dataBlock;	
 	private Header header;
@@ -52,8 +53,8 @@ public class GenericDataReader implements Iterator<DataBlock>, Iterable<DataBloc
 	public GenericDataReader(SeekableInput sin) throws IOException{
 		this.sin = new SeekableInputStream(sin);
 		init(this.sin);
-		blockStart = this.sin.tell();
-		System.out.println(" ------------> constructer's block start: " + blockStart);
+		nextBlockStart = this.sin.tell();		
+		System.out.println("-------> GenericDataReader Constructer, header size(a.k.a next block start): " + nextBlockStart);
 	}
 
 	private void init(SeekableInput sin) throws IOException,
@@ -87,7 +88,7 @@ public class GenericDataReader implements Iterator<DataBlock>, Iterable<DataBloc
 	
 	public void seek(long position) throws IOException {
 		sin.seek(position);
-		blockStart = position;
+		nextBlockStart = position;
 	}
 	
 	public long tell() throws IOException { 
@@ -110,7 +111,7 @@ public class GenericDataReader implements Iterator<DataBlock>, Iterable<DataBloc
 						break;
 				}
 				if (j == DataFileConstants.SYNC_SIZE) {                       // matched a complete sync
-					blockStart = position + i + DataFileConstants.SYNC_SIZE;
+					nextBlockStart = position + i + DataFileConstants.SYNC_SIZE;
 					return;
 				}
 				b = sin.read();
@@ -120,13 +121,12 @@ public class GenericDataReader implements Iterator<DataBlock>, Iterable<DataBloc
       // fall through
 		}
     // if no match or EOF set start to the end position
-		blockStart = sin.tell();
+		nextBlockStart = sin.tell();
     //System.out.println("block start location after EOF: " + blockStart );
 		return;
 	}	
 
 	public boolean pastSync(long position) throws IOException {
-		System.out.println("-------> block start: " + blockStart + ", file length: " + sin.length());
 		return (blockStart >= position+DataFileConstants.SYNC_SIZE);
 	}
 
@@ -137,20 +137,22 @@ public class GenericDataReader implements Iterator<DataBlock>, Iterable<DataBloc
 
 	@Override
 	public boolean hasNext() {
+		if (!isTaken)
+			return dataBlock.isAvailable();	
+		
 		try {
-			if (blockStart >= sin.length())
+			if (nextBlockStart >= sin.length())
 				return false;
 		} catch (IOException e1) {
 			e1.printStackTrace();
-		}
-		
-		if (!isTaken)
-			return dataBlock.isAvailable();
+		}		
+
 		try {
+			blockStart = sin.tell();
 			dataBlock = new DataBlock();
 			dataBlock.readFields(dataInput);
 			dataInput.readFully(syncBuffer);
-			blockStart = sin.tell();
+			nextBlockStart = sin.tell();
 			if (!Arrays.equals(syncBuffer, header.sync))
 				throw new IOException("Invalid sync!");
 			isTaken = false;

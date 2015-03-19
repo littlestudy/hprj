@@ -29,6 +29,8 @@ public class StuRecordReader extends RecordReader<DataBlock, NullWritable>{
 		reader.sync(split.getStart());
 		this.start = reader.tell();
 		this.end = split.getStart() + split.getLength();
+		System.out.println("split start: " + split.getStart() + ", split length: " + split.getLength() 
+				+ ", split end:" + this.end);
 	}
 
 	@Override

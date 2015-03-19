@@ -22,6 +22,8 @@ import org.study.stu.io.output.StuOutputFormat;
 import org.study.stu.utils.Constant;
 import org.study.stu.utils.DataFileConstants;
 
+import com.sun.xml.bind.v2.schemagen.xmlschema.Redefinable;
+
 public class TestInput extends Configured implements Tool{
 	public static void main(String[] args) throws Exception {
 		int res = ToolRunner.run(new Configuration(), new TestInput(), args);
@@ -42,7 +44,10 @@ public class TestInput extends Configured implements Tool{
 		job.setJarByClass(Text.class);
 		
 		job.setMapperClass(MapperClass.class);
-		job.setNumReduceTasks(0);
+		job.setReducerClass(ReducerClass.class);
+		
+		job.setMapOutputKeyClass(Text.class);
+		job.setMapOutputValueClass(NullWritable.class);
 		
 		job.setInputFormatClass(StuInputFormat.class);
 		
@@ -55,8 +60,10 @@ public class TestInput extends Configured implements Tool{
 		return 0;
 	}
 	
-	public static class MapperClass extends Mapper<DataBlock, NullWritable, NullWritable, NullWritable>{
+	public static class MapperClass extends Mapper<DataBlock, NullWritable, Text, NullWritable>{
 				
+		private Text outputKey = new Text();
+		private long count = 0;
 		@Override
 		protected void setup(
 				Context context)
@@ -70,26 +77,27 @@ public class TestInput extends Configured implements Tool{
 				DataBlock key,
 				NullWritable value,
 				Context context) throws IOException, InterruptedException {
-			System.out.println(key.toString());			
+			//System.out.println(key.toString());	
+			outputKey.set(key.toString());
+			count++;
+			context.write(outputKey, NullWritable.get());
 		}
 		
 		@Override
 		protected void cleanup(Context context)
 				throws IOException, InterruptedException {
-			
+			System.out.println("------> map counts: " + count);
 		}
 	}
 	
-	public static class ReducerClass extends Reducer<Text, NullWritable, DataBlock, NullWritable>{
+	public static class ReducerClass extends Reducer<Text, NullWritable, Text, NullWritable>{
 		@Override
 		protected void reduce(
 				Text key,
 				Iterable<NullWritable> values,
 				Context context)
 				throws IOException, InterruptedException {
-			DataBlock block = null;
-			block = new DataBlock(key.toString());
-			context.write(block, NullWritable.get());
+			context.write(key, NullWritable.get());
 		}
 	}
 }

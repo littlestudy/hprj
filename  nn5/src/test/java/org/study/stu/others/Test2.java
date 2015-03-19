@@ -7,15 +7,15 @@ public class Test2 {
 	
 	public static void main(String[] args) throws IOException {
 		PrintStream ps = new PrintStream("/home/ym/ytmp/testfile");
-		long n = 1;		
+		long n = 1000000;
 		
 		
-		String str1 = createStr("0", 31);
-		for (long i = 0; i < n; i++)
-			ps.println(str1);
-		String str2 = createStr("1", 31);
-		for (long i = 0; i < n; i++)
-			ps.println(str2);
+		
+		for (long i = 0; i < n; i++){
+			//System.out.println(String.format("%1$060d", i));
+			ps.println(String.format("%1$0100d", i));
+		}
+		System.out.println("ok");
 		
 		ps.close();
 	}
