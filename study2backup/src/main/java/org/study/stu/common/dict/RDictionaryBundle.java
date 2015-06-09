@@ -35,7 +35,7 @@ public class RDictionaryBundle {
 			map = new HashMap<Integer, String>(mapSize);
 			for (int i = 0; i < mapSize; i++){
 				String val = dataInput.readUTF();				
-				map.put((int) dataInput.readShort(), val);
+				map.put((int) dataInput.readInt(), val);
 			}
 		}
 		

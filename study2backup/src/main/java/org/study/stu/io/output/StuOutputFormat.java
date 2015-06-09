@@ -11,6 +11,7 @@ import org.apache.hadoop.mapreduce.RecordWriter;
 import org.apache.hadoop.mapreduce.TaskAttemptContext;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.study.stu.common.DataBlock;
+import org.study.stu.file.BZip2Codec;
 import org.study.stu.file.GenericWriter;
 import org.study.stu.file.NullCodec;
 import org.study.stu.file.SnappyCodec;
@@ -52,9 +53,11 @@ public class StuOutputFormat extends FileOutputFormat<DataBlock, NullWritable>{
 		
 		if (codecName == null) {
 			c = NullCodec.INSTANCE;
-		} else {
+		} else if (codecName.equals(DataFileConstants.SNAPPY_CODEC)){
 			c = SnappyCodec.INSTANCE;
-		}
+		} else if (codecName.equals(DataFileConstants.BZIP2_CODEC)){
+			c = BZip2Codec.INSTANCE;
+		}			
 		
 		String groupBundle = job.getConfiguration().get(DataFileConstants.GROUP_BUNDLE);
 		String separator = job.getConfiguration().get(DataFileConstants.GROUP_BUNDLE_SEPARATOR);

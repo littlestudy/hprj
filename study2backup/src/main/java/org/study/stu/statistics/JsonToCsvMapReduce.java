@@ -1,9 +1,11 @@
 package org.study.stu.statistics;
 
 import java.io.IOException;
+
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.conf.Configured;
 import org.apache.hadoop.fs.Path;
+import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.NullWritable;
 import org.apache.hadoop.io.Text;
@@ -27,8 +29,8 @@ public class JsonToCsvMapReduce extends Configured implements Tool{
 		args = new String[] {
 				//"hdfs://master:9000/user/hadoop/data/o100R",
 				//Constant.DEFAULT_RESOURCES_DIR + "/data/jsondata.txt",
-				"/home/ym/data/1mO",
-				"/home/ym/data/1mOcsv"
+				"/home/ym/data/4m",
+				"/home/ym/data/4m-csv7"
 		};
 		int res = ToolRunner.run(new Configuration(),  new JsonToCsvMapReduce(), args);
 		System.exit(res);
@@ -52,8 +54,8 @@ public class JsonToCsvMapReduce extends Configured implements Tool{
 								new GroupBundle(Constant.TEST_NE_GROUP_BUNDLE_STR2, Constant.DEFAULT_SEPARATOR)));
 		job.setInputFormatClass(BaseDataInputFormat.class);
 
-		job.setMapOutputKeyClass(Text.class);
-		job.setMapOutputValueClass(NullWritable.class);
+		job.setMapOutputKeyClass(IntWritable.class);
+		job.setMapOutputValueClass(Text.class);
 		
 		job.setOutputKeyClass(Text.class);
 		job.setOutputValueClass(NullWritable.class);
@@ -67,21 +69,25 @@ public class JsonToCsvMapReduce extends Configured implements Tool{
 		return 0;
 	}
 	
-	public static class MappClass extends Mapper<LongWritable, Text, Text, NullWritable> {		
+	public static class MappClass extends Mapper<LongWritable, Text, IntWritable, Text> {		
+		
+		IntWritable outkey = new IntWritable();
 		
 		@Override
 		protected void map(LongWritable key, Text value, Context context)
 				throws IOException, InterruptedException {
-			context.write(value, NullWritable.get());
+			outkey.set(value.toString().hashCode());
+			context.write(outkey, value);
 		}
 	}
 	
-	public static class ReducerClass extends Reducer<Text, NullWritable, Text, NullWritable>{
+	public static class ReducerClass extends Reducer<IntWritable, Text, Text, NullWritable>{
 		@Override
-		protected void reduce(Text key, Iterable<NullWritable> values,
+		protected void reduce(IntWritable key, Iterable<Text> values,
 				Context context)
 				throws IOException, InterruptedException {
-			context.write(key, NullWritable.get());
+			for (Text t : values)
+				context.write(t, NullWritable.get());
 		}
 	}
 }

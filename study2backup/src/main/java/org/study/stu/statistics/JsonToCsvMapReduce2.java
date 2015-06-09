@@ -32,8 +32,8 @@ public class JsonToCsvMapReduce2 extends Configured implements Tool{
 		args = new String[] {
 				//"hdfs://master:9000/user/hadoop/data/o100R",
 				//Constant.DEFAULT_RESOURCES_DIR + "/data/jsondata.txt",
-				"/home/ym/data/1mO",
-				"/home/ym/data/1mOc"
+				"/home/ym/data/4m",
+				"/home/ym/data/4m-cmpr-400k"
 		};
 		int res = ToolRunner.run(new Configuration(),  new JsonToCsvMapReduce2(), args);
 		System.exit(res);
@@ -59,7 +59,7 @@ public class JsonToCsvMapReduce2 extends Configured implements Tool{
 								new GroupBundle(Constant.TEST_NE_GROUP_BUNDLE_STR, Constant.DEFAULT_SEPARATOR)));				
 		job.setInputFormatClass(BaseDataInputFormat.class);
 		
-		job.getConfiguration().set(DataFileConstants.CONF_OUTPUT_CODEC, DataFileConstants.SNAPPY_CODEC);
+		job.getConfiguration().set(DataFileConstants.CONF_OUTPUT_CODEC, DataFileConstants.BZIP2_CODEC);
 		job.getConfiguration().set(DataFileConstants.GROUP_BUNDLE, Constant.TEST_NE_GROUP_BUNDLE_STR);
 		job.getConfiguration().set(DataFileConstants.GROUP_BUNDLE_SEPARATOR, Constant.DEFAULT_SEPARATOR);
 		
@@ -99,7 +99,7 @@ public class JsonToCsvMapReduce2 extends Configured implements Tool{
 				= new MergeInMemoryWithDict(Constant.TEST_NE_GROUP_BUNDLE_STR, Constant.DEFAULT_SEPARATOR);
 			Iterator<Text> iter = values.iterator();
 			while (iter.hasNext()){
-				DataBlock dataBlock = md.mergeInMemory(iter,10000);
+				DataBlock dataBlock = md.mergeInMemory(iter,400000);
 				md.clear();				
 				context.write(dataBlock, NullWritable.get());
 			}

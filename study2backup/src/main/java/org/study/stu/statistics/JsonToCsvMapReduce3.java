@@ -1,9 +1,11 @@
 package org.study.stu.statistics;
 
 import java.io.IOException;
+
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.conf.Configured;
 import org.apache.hadoop.fs.Path;
+import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.NullWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Job;
@@ -25,8 +27,8 @@ public class JsonToCsvMapReduce3 extends Configured implements Tool{
 	public static void main(String[] args) throws Exception {	
 		args = new String[] {
 				//"hdfs://master:9000/user/hadoop/data/o100R",
-				"/home/ym/data/1mOc",
-				"/home/ym/data/1mOu"
+				"/home/ym/data/4m-cmpr-200k",
+				"/home/ym/data/4m-r-200k"
 		};
 		int res = ToolRunner.run(new Configuration(),  new JsonToCsvMapReduce3(), args);
 		System.exit(res);
@@ -51,8 +53,8 @@ public class JsonToCsvMapReduce3 extends Configured implements Tool{
 		
 		job.setOutputFormatClass(TextOutputFormat.class);
 		
-		job.setMapOutputKeyClass(Text.class);
-		job.setMapOutputValueClass(NullWritable.class);
+		job.setMapOutputKeyClass(IntWritable.class);
+		job.setMapOutputValueClass(Text.class);
 		
 		FileInputFormat.setInputPaths(job, inputPath);
 		FileOutputFormat.setOutputPath(job, outputPath);
@@ -63,34 +65,37 @@ public class JsonToCsvMapReduce3 extends Configured implements Tool{
 		return 0;
 	}
 	
-	public static class MappClass extends Mapper<DataBlock, NullWritable, Text, NullWritable> {
+	public static class MappClass extends Mapper<DataBlock, NullWritable, IntWritable, Text> {
 
-		private Text outKey = new Text();
+		private Text outValue = new Text();
+		private IntWritable outputKey = new IntWritable();
 		
 		@Override
 		protected void setup(
 				Context context)
 				throws IOException, InterruptedException {
-		}
+		}		
 		
 		@Override
 		protected void map(DataBlock key, NullWritable value, Context context)
 				throws IOException, InterruptedException {
-			System.out.println("---------- map function -------------");		
+			//System.out.println("---------- map function -------------");
+			
 			RestoreInMemoryWithDict rimw = new RestoreInMemoryWithDict(key);
 			for (String record : rimw.restore()){
-				//System.out.println(record);
-				outKey.set(record);
-				context.write(outKey, NullWritable.get());
+				outValue.set(record);
+				outputKey.set(outValue.toString().hashCode());
+				context.write(outputKey, outValue);
 			}
 		}
 	}
 	
-	public static class ReducerClass extends Reducer<Text, NullWritable, Text, NullWritable>{
+	public static class ReducerClass extends Reducer<IntWritable, Text, Text, NullWritable>{
 		@Override
-		protected void reduce(Text key, Iterable<NullWritable> values,
+		protected void reduce(IntWritable key, Iterable<Text> values,
 				Context context) throws IOException, InterruptedException {
-				context.write(key, NullWritable.get());
+			for (Text t : values)
+				context.write(t, NullWritable.get());
 		}
 	}
 }

@@ -86,9 +86,12 @@ public class GenericDataReader implements Iterator<DataBlock>, Iterable<DataBloc
 		String codecStr = new String(header.meta.get(DataFileConstants.CONF_OUTPUT_CODEC), "UTF-8");
 		if (codecStr.equals(DataFileConstants.NULL_CODEC)) {
 			this.codec = NullCodec.INSTANCE;
-		} else {
+		} else if (codecStr.equals(DataFileConstants.SNAPPY_CODEC)){
 			this.codec = SnappyCodec.INSTANCE;
+		} else if (codecStr.equals(DataFileConstants.BZIP2_CODEC)) {
+			this.codec = BZip2Codec.INSTANCE;
 		}
+			
 	}
 	
 	public void seek(long position) throws IOException {

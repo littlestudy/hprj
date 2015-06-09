@@ -7,11 +7,11 @@ import java.io.PrintStream;
 
 public class Sample {
 	public static void main(String[] args) throws IOException {
-		long amount = 100000;
+		long amount = 4000000;
 		
-		BufferedReader reader = new BufferedReader(new FileReader("/home/ym/data/0701"));
-		PrintStream ps = new PrintStream("/home/ym/data/1mO");
-		for (long i = 0; i < amount; i++){
+		BufferedReader reader = new BufferedReader(new FileReader("/home/ym/Lstudy/data/0701"));
+		PrintStream ps = new PrintStream("/home/ym/data/4m");
+		for (long i = 0; i < amount; i++){	
 			ps.println(reader.readLine());
 		}
 		reader.close();

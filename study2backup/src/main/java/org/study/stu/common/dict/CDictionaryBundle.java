@@ -79,7 +79,7 @@ public class CDictionaryBundle {
 			while(iter.hasNext()){
 				Map.Entry<String, Integer> entry = (Map.Entry<String, Integer>) iter.next();
 				out.writeUTF(entry.getKey());
-				out.writeShort(entry.getValue());
+				out.writeInt(entry.getValue());
 			}		
 		}
 		
