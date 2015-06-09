@@ -7,8 +7,8 @@ import java.io.IOException;
 public class cmp2 {
 	public static void main(String[] args) throws IOException {
 		long amount = 1426;
-		String o1 = "/home/ym/data/4m-r-200k/part-r-00000";
-		String o2 = "/home/ym/data/4m-csv7/part-r-00000";
+		//String o1 = "/home/ym/data/4m-r-200k/part-r-00000";
+		//String o2 = "/home/ym/data/4m-csv7/part-r-00000";
 		
 		String d1 = "/home/ym/data/diff/a";
 		String d2 = "/home/ym/data/diff/b";
